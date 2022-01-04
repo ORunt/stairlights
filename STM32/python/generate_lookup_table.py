@@ -55,13 +55,13 @@ stair_graph_x, stair_graph_y = graph_function(graph_sel["STAIR_FUNCTION"], graph
 if plot:
     plt.figure(1)
     plt.subplot(2, 1, 1)
-    plt.title(graph_sel["FADE_FUNCTION"])
+    plt.title("LED Fade Profile")
     plt.plot(fade_graph_x / (graph_params["FREQUENCY"] * 100.0), fade_graph_y, '-g', marker='o', label='Green')
     plt.xlabel('Time (sec)')
     plt.ylabel('LED Brightness')
 
     plt.subplot(2, 1, 2)
-    plt.title(graph_sel["STAIR_FUNCTION"])
+    plt.title("Stair light Profile")
     plt.plot(stair_graph_x / (graph_params["FREQUENCY"] * 100.0), stair_graph_y, '-g', marker='o', label='Green')
     plt.xlabel('Time (sec)')
     plt.ylabel('Stairs')

@@ -80,6 +80,27 @@ static void TIM_Config(void)
     TIM_Cmd(TIM3, ENABLE);
 }
 
+static void GPIO_ButtonSetup(void)
+{
+    GPIO_InitTypeDef   GPIO_InitStructure;
+    
+    /* Configure PB8 - PB9 in input mode */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;	  	// input
+    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;		// pushpull mode
+    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	// max
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;	    // Pullup resistors
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+    
+    /* Configure PB10 - PB11 as output ground */
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;
+    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;	  	// output
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;    // output should not have pull up/down
+    GPIO_Init(GPIOB, &GPIO_InitStructure);
+    
+    GPIOB->BRR = GPIO_Pin_10 | GPIO_Pin_11;             // Reset to 0V
+}
+
 static void GPIO_Config(void)
 {
     GPIO_InitTypeDef   GPIO_InitStructure;
@@ -109,6 +130,7 @@ void stairlightSetup(void)
 {
     CLK_Config();
     GPIO_Config();
+    GPIO_ButtonSetup(); // TODO: Replace with I2C sensors in the future
     TIM_Config();
 }
 
@@ -192,7 +214,7 @@ static void startOnFadeUp(void)
     }
 }
 
-static void startOffFadeUp(void)
+static void startOffFadeDown(void)
 {
     us_timer_counter = 0;
     uint32_t temp_counter = 0;
@@ -215,7 +237,7 @@ static void startOffFadeUp(void)
     }
 }
 
-static void startOffFadeDown(void)
+static void startOffFadeUp(void)
 {
     int i;
     uint32_t temp_counter = 0;
@@ -265,6 +287,12 @@ void waitForGap(void)
     while(us_timer_counter < CONVERT_2_COUNT(GAP_DURATION)){}
 }
 
+void waitForGapv2(uint16_t ms)
+{
+    us_timer_counter = 0;
+    while(us_timer_counter < CONVERT_2_COUNT(ms)){}
+}
+
 
 void startFade(direction_e dir)
 {
@@ -282,5 +310,35 @@ void startFade(direction_e dir)
         break;
         default:
             break;
+    }
+}
+
+void hackPwm(void)
+{
+    /*setLedBrightness(0,10);
+    waitForGap();
+    setLedBrightness(0,20);
+    waitForGap();
+    setLedBrightness(0,30);
+    waitForGap();
+    setLedBrightness(0,40);
+    waitForGap();
+    setLedBrightness(0,50);
+    waitForGap();
+    setLedBrightness(0,60);
+    waitForGap();
+    setLedBrightness(0,70);
+    waitForGap();
+    setLedBrightness(0,80);
+    waitForGap();
+    setLedBrightness(0,90);
+    waitForGap();
+    setLedBrightness(0,100);
+    waitForGap();*/
+    int i;
+    for(i=0; i<=100; i++)
+    {
+        setLedBrightness(0,i);
+        waitForGapv2(50);
     }
 }

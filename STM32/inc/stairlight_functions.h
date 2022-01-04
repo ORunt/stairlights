@@ -13,7 +13,7 @@ typedef enum{
 #define LED_CHANNELS    12      // Number of stairs. Don't change
 #define FREQUENCY       400     // The frequency of the PWM signal (Hz) (Tested up to 400Hz)
 #define STAIR_FUNCTION  PARABOLA_SS
-#define FADE_FUNCTION   PARABOLA_FS
+#define FADE_FUNCTION   PARABOLA_SS
 
 typedef struct{
     GPIO_TypeDef* port;
@@ -27,3 +27,4 @@ typedef enum{
 
 void stairlightSetup(void);
 void startFade(direction_e dir);
+void hackPwm(void);
