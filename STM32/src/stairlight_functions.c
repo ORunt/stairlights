@@ -89,7 +89,7 @@ static void GPIO_ButtonSetup(void)
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;	  	// input
     GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;		// pushpull mode
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	// max
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;	    // Pullup resistors
+    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;	    // Pulldown resistors
     GPIO_Init(GPIOB, &GPIO_InitStructure);
     
     /* Configure PB10 - PB11 as output ground */
@@ -98,7 +98,7 @@ static void GPIO_ButtonSetup(void)
     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;    // output should not have pull up/down
     GPIO_Init(GPIOB, &GPIO_InitStructure);
     
-    GPIOB->BRR = GPIO_Pin_10 | GPIO_Pin_11;             // Reset to 0V
+    GPIOB->BSRR = GPIO_Pin_10 | GPIO_Pin_11;            // Set High
 }
 
 static void GPIO_Config(void)

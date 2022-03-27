@@ -12,11 +12,11 @@ int main (void)
     while(1)
     {
         //hackPwm();
-        if(!(GPIOB->IDR & GPIO_Pin_8))
+        if((GPIOB->IDR & GPIO_Pin_8))
         {
             startFade(DIR_UP);
         }
-        if(!(GPIOB->IDR & GPIO_Pin_9))
+        if((GPIOB->IDR & GPIO_Pin_9))
         {
             startFade(DIR_DOWN);
         }
