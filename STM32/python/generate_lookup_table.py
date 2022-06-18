@@ -14,7 +14,7 @@ lt_path = os.path.join(os.path.split(script_dir)[0], 'inc/graph_lookup_table.h')
 ref_path = os.path.join(os.path.split(script_dir)[0], 'inc/stairlight_functions.h')
 
 graph_types = ["LINEAR", "PARABOLA_FS", "PARABOLA_SS", "EXPONENTIAL_FS", "EXPONENTIAL_SS"]
-graph_params = {"FADE_DURATION":0, "STEPS_DURATION":0, "MAX_BRIGHTNESS":0, "LED_CHANNELS":0, "FREQUENCY":0}
+graph_params = {"FADE_DURATION":0, "STEPS_DURATION":0, "MAX_BRIGHTNESS_DAY":0, "MAX_BRIGHTNESS_NIGHT":0, "LED_CHANNELS":0, "FREQUENCY":0}
 graph_sel = {"STAIR_FUNCTION":"", "FADE_FUNCTION":""}
 
 def graph_function(graph, x_lim, y_lim):
@@ -48,7 +48,8 @@ print(graph_params)
 print("STAIR_FUNCTION: " + graph_sel["STAIR_FUNCTION"])
 print("FADE_FUNCTION: " + graph_sel["FADE_FUNCTION"])
 
-fade_graph_x, fade_graph_y = graph_function(graph_sel["FADE_FUNCTION"], graph_params["FADE_DURATION"], graph_params["MAX_BRIGHTNESS"])
+fade_graph_d_x, fade_graph_d_y = graph_function(graph_sel["FADE_FUNCTION"], graph_params["FADE_DURATION"], graph_params["MAX_BRIGHTNESS_DAY"])
+fade_graph_n_x, fade_graph_n_y = graph_function(graph_sel["FADE_FUNCTION"], graph_params["FADE_DURATION"], graph_params["MAX_BRIGHTNESS_NIGHT"])
 stair_graph_x, stair_graph_y = graph_function(graph_sel["STAIR_FUNCTION"], graph_params["STEPS_DURATION"], graph_params["LED_CHANNELS"])
 
 # plot the graph
@@ -56,13 +57,15 @@ if plot:
     plt.figure(1)
     plt.subplot(2, 1, 1)
     plt.title("LED Fade Profile")
-    plt.plot(fade_graph_x / (graph_params["FREQUENCY"] * 100.0), fade_graph_y, '-g', marker='o', label='Green')
+    plt.plot(fade_graph_d_x / (graph_params["FREQUENCY"] * 100.0), fade_graph_d_y, color = 'tab:green', marker='o', label='Day')
+    plt.plot(fade_graph_n_x / (graph_params["FREQUENCY"] * 100.0), fade_graph_n_y, color = 'tab:blue', marker='o', label='Night')
     plt.xlabel('Time (sec)')
     plt.ylabel('LED Brightness')
+    plt.legend()
 
     plt.subplot(2, 1, 2)
     plt.title("Stair light Profile")
-    plt.plot(stair_graph_x / (graph_params["FREQUENCY"] * 100.0), stair_graph_y, '-g', marker='o', label='Green')
+    plt.plot(stair_graph_x / (graph_params["FREQUENCY"] * 100.0), stair_graph_y, color = 'tab:orange', marker='o', label='Stair on times')
     plt.xlabel('Time (sec)')
     plt.ylabel('Stairs')
     plt.show()
@@ -71,4 +74,5 @@ if plot:
 with open(lt_path, 'w') as f:
     f.write("#include \"stdint.h\"\n\n")
     f.write("const uint32_t stair_times[{}] = {{{}}};\n\n".format(graph_params["LED_CHANNELS"], np.array2string(stair_graph_x.astype(int), separator=', ')[1:-1]))
-    f.write("const uint32_t fade_times[{}] = {{{}}};\n\n".format(graph_params["MAX_BRIGHTNESS"], np.array2string(fade_graph_x.astype(int), separator=', ')[1:-1]))
+    f.write("const uint32_t fade_times_day[{}] = {{{}}};\n\n".format(graph_params["MAX_BRIGHTNESS_DAY"], np.array2string(fade_graph_d_x.astype(int), separator=', ')[1:-1]))
+    f.write("const uint32_t fade_times_night[{}] = {{{}}};\n\n".format(graph_params["MAX_BRIGHTNESS_NIGHT"], np.array2string(fade_graph_n_x.astype(int), separator=', ')[1:-1]))

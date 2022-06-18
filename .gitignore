@@ -1,0 +1,7 @@
+*.o
+*.d
+STM32/Objects/*
+STM32/Listings/*
+STM32/DebugConfig/*
+.idea/*
+STM32/inc/graph_lookup_table.h

@@ -1,0 +1,13 @@
+LED strip lights
+	GPIOA, pins 0 - 9
+	GPIOB, pins 6 - 7
+
+Push Buttons
+	GPIOB, pins 1 - 4
+
+TOF sensors
+	GPIOB, pins 8 - 9
+	GPIOB, pins 10 - 11 (xshut)
+
+ADC LDR
+	GPIOB, pin 0
