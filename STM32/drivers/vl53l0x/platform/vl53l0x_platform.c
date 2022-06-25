@@ -1,7 +1,7 @@
 #include "vl53l0x_platform.h"
 #include "vl53l0x_api.h"
 
-#include "stm32_i2c_high_level.h"
+#include "i2c_comms.h"
 #include <string.h>
 
 #define I2C_TIME_OUT_BASE   10

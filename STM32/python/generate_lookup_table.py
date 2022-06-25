@@ -10,8 +10,9 @@ if len(sys.argv) > 1:
 
 # Setup working directories
 script_dir = os.path.dirname(os.path.realpath(__file__))
-lt_path = os.path.join(os.path.split(script_dir)[0], 'inc/graph_lookup_table.h')
-ref_path = os.path.join(os.path.split(script_dir)[0], 'inc/stairlight_functions.h')
+lt_path_h = os.path.join(os.path.split(script_dir)[0], 'inc/graph_lookup_table.h')
+lt_path_c = os.path.join(os.path.split(script_dir)[0], 'src/graph_lookup_table.c')
+ref_path = os.path.join(os.path.split(script_dir)[0], 'inc/main.h')
 
 graph_types = ["LINEAR", "PARABOLA_FS", "PARABOLA_SS", "EXPONENTIAL_FS", "EXPONENTIAL_SS"]
 graph_params = {"FADE_DURATION":0, "STEPS_DURATION":0, "MAX_BRIGHTNESS_DAY":0, "MAX_BRIGHTNESS_NIGHT":0, "LED_CHANNELS":0, "FREQUENCY":0}
@@ -71,8 +72,17 @@ if plot:
     plt.show()
 
 
-with open(lt_path, 'w') as f:
-    f.write("#include \"stdint.h\"\n\n")
+with open(lt_path_c, 'w') as f:
+    f.write("#include \"graph_lookup_table.h\"\n\n")
     f.write("const uint32_t stair_times[{}] = {{{}}};\n\n".format(graph_params["LED_CHANNELS"], np.array2string(stair_graph_x.astype(int), separator=', ')[1:-1]))
     f.write("const uint32_t fade_times_day[{}] = {{{}}};\n\n".format(graph_params["MAX_BRIGHTNESS_DAY"], np.array2string(fade_graph_d_x.astype(int), separator=', ')[1:-1]))
     f.write("const uint32_t fade_times_night[{}] = {{{}}};\n\n".format(graph_params["MAX_BRIGHTNESS_NIGHT"], np.array2string(fade_graph_n_x.astype(int), separator=', ')[1:-1]))
+
+with open(lt_path_h, 'w') as f:
+    f.write("#ifndef __GRAPH_LOOKUP_TABLE_H\n")
+    f.write("#define __GRAPH_LOOKUP_TABLE_H\n\n")
+    f.write("#include \"stdint.h\"\n\n")
+    f.write("extern const uint32_t stair_times[{}];\n".format(graph_params["LED_CHANNELS"]))
+    f.write("extern const uint32_t fade_times_day[{}];\n".format(graph_params["MAX_BRIGHTNESS_DAY"]))
+    f.write("extern const uint32_t fade_times_night[{}];\n".format(graph_params["MAX_BRIGHTNESS_NIGHT"]))
+    f.write("\n#endif // __GRAPH_LOOKUP_TABLE_H\n")

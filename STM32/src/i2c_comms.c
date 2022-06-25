@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    stm32_i2c_high_level.c
+  * @file    i2c_comms.c
   * @author  MCD Application Team and Cam Sharp mods
   * @version V1.1.1
   * @date    16-January-2014
@@ -36,7 +36,7 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32_i2c_high_level.h"
+#include "i2c_comms.h"
 
 
 __IO uint32_t I2CTimeout = I2C_LONG_TIMEOUT;
@@ -70,79 +70,6 @@ void HL_I2C_DeInit(uint8_t sda_pin, uint8_t scl_pin)
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 }
 
-/**
-  * @brief  Initializes the I2C on Port B.
-  * @param  sda_pin i2c data pin number (decimal)
-  * @param  scl_pin i2c clk pin number (decimal)
-  * @retval None
-  */
-void HL_I2C_Init(uint8_t sda_pin, uint8_t scl_pin)
-{
-    // =========== Setup I2C Interrupts ===========
-    NVIC_InitTypeDef NVIC_InitStructure;
-
-    /* Reconfigure and enable I2C1 error interrupt to have the higher priority */
-    NVIC_InitStructure.NVIC_IRQChannel = I2C1_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
-
-    // =========== Setup GPIO's for I2C ===========
-
-    GPIO_InitTypeDef  GPIO_InitStructure;
-
-    /* I2C1 Periph clock enable */
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C1, ENABLE);
-
-    /* Configure the I2C clock source. The clock is derived from the HSI */
-    RCC_I2CCLKConfig(RCC_I2C1CLK_HSI);
-
-    /* I2C_SCL_GPIO_CLK, I2C_SDA_GPIO_CLK Periph clock enable */
-    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
-
-    /* Connect PXx to SCL */
-    GPIO_PinAFConfig(GPIOB, scl_pin, GPIO_AF_1);
-
-    /* Connect PXx to SDA */
-    GPIO_PinAFConfig(GPIOB, sda_pin, GPIO_AF_1);
-
-    /* Configure I2C pins: SCL */
-    GPIO_InitStructure.GPIO_Pin = 1<<scl_pin;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
-    GPIO_InitStructure.GPIO_OType = GPIO_OType_OD;
-    GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-    /* Configure I2C pins: SDA */
-    GPIO_InitStructure.GPIO_Pin = 1<<sda_pin;
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
-
-    // =========== Setup I2C Config ===========
-
-    I2C_InitTypeDef  I2C_InitStructure;
-
-    /* I2C1 configuration */
-    I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
-    I2C_InitStructure.I2C_AnalogFilter = I2C_AnalogFilter_Enable;
-    I2C_InitStructure.I2C_DigitalFilter = 0x00;
-    I2C_InitStructure.I2C_OwnAddress1 = 0x00;
-    I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
-    I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
-    //I2C_InitStructure.I2C_Timing = 0x00300F38; /* set 400KHz fast mode i2c (maybe)*/
-    //I2C_InitStructure.I2C_Timing = 0x00C0216C;
-    I2C_InitStructure.I2C_Timing =   0x0010020A;
-    //I2C_InitStructure.I2C_Timing = 0x0000020B;
-
-    /* Apply I2C1 configuration after enabling it */
-    I2C_Init(I2C1, &I2C_InitStructure);
-
-    /* I2C1 Peripheral Enable */
-    I2C_Cmd(I2C1, ENABLE);
-
-    /* I2C1 Interrupts enable for errors - do we actually need this? */
-    I2C_ITConfig(I2C1, I2C_IT_ERRI, ENABLE);
-}
 
 /**
   * @brief  Checks the status of the I2C sensor.

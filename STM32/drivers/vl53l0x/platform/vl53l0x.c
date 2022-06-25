@@ -1,4 +1,4 @@
-#include "stm32f0xx_i2c.h"
+#include "stm32f0xx.h"
 #include "vl53l0x.h"
 
 /* All the values used in this driver are coming from ST datasheet and examples.
@@ -10,13 +10,10 @@
 #define VL53L0X_INITIAL_ADDR                    0x29<<1
 #define VL53L0X_REG_WHO_AM_I                    0xC0
 #define VL53L0X_CHIP_ID                         0xEEAA
-#define VL53L0X_SETUP_SIGNAL_LIMIT              (0.1*65536)
-#define VL53L0X_SETUP_SIGMA_LIMIT               (60*65536)
-#define VL53L0X_SETUP_MAX_TIME_FOR_RANGING      33000
-#define VL53L0X_SETUP_PRE_RANGE_VCSEL_PERIOD    18
-#define VL53L0X_SETUP_FINAL_RANGE_VCSEL_PERIOD  14
 
 #define CONFIG_VL53L0X_PROXIMITY_THRESHOLD      100 //(mm)
+#define CONFIG_VL53L0X_INT_THRESH_LOW           300<<16
+#define CONFIG_VL53L0X_INT_THRESH_HIGH          0<<16
 
 #define ERR_CHK(x)          {uint16_t call_return = (x) ; if (call_return != 0) return call_return;}
 #define LOG_DBG(msg, ...)
@@ -36,13 +33,73 @@ int vl53l0x_get_measurement(vl53l0x_data *drv_data, sensor_channel chan, uint16_
 	return 0;
 }
 
+VL53L0X_Error WaitStopCompleted(VL53L0X_DEV Dev)
+{
+    VL53L0X_Error Status = VL53L0X_ERROR_NONE;
+    uint32_t StopCompleted = 0;
+    uint32_t LoopNb;
 
-static int vl53l0x_setup_single_shot(vl53l0x_data *drv_data)
+    // Wait until it finished
+    // use timeout to avoid deadlock
+    if (Status == VL53L0X_ERROR_NONE) {
+        LoopNb = 0;
+        do {
+            Status = VL53L0X_GetStopCompletedStatus(Dev, &StopCompleted);
+            if ((StopCompleted == 0x00) || Status != VL53L0X_ERROR_NONE) {
+                break;
+            }
+            LoopNb = LoopNb + 1;
+            VL53L0X_PollingDelay(Dev);
+        } while (LoopNb < VL53L0X_DEFAULT_MAX_LOOP);
+
+        if (LoopNb >= VL53L0X_DEFAULT_MAX_LOOP) {
+            Status = VL53L0X_ERROR_TIME_OUT;
+        }
+
+    }
+
+    return Status;
+}
+
+
+static int vl53l0x_setup_single_shot(vl53l0x_data *drv_data, vl53l0x_range range)
 {
 	uint8_t VhvSettings;
 	uint8_t PhaseCal;
 	uint32_t refSpadCount;
 	uint8_t isApertureSpads;
+
+	FixPoint1616_t signalLimit = (FixPoint1616_t)(0.25*65536);
+	FixPoint1616_t sigmaLimit = (FixPoint1616_t)(18*65536);
+	uint32_t timingBudget = 33000;
+	uint8_t preRangeVcselPeriod = 14;
+	uint8_t finalRangeVcselPeriod = 10;
+
+    switch(range)
+    {
+        case HIGH_ACCURACY:
+            signalLimit = (FixPoint1616_t)(0.25*65536);
+            sigmaLimit = (FixPoint1616_t)(18*65536);
+            timingBudget = 200000;
+            preRangeVcselPeriod = 14;
+            finalRangeVcselPeriod = 10;
+            break;
+        case HIGH_SPEED:
+            signalLimit = (FixPoint1616_t)(0.25*65536);
+            sigmaLimit = (FixPoint1616_t)(32*65536);
+            timingBudget = 20000;
+            preRangeVcselPeriod = 14;
+            finalRangeVcselPeriod = 10;
+            break;
+        case LONG_RANGE:
+        default:
+            signalLimit = (FixPoint1616_t)(0.1*65536);
+            sigmaLimit = (FixPoint1616_t)(60*65536);
+            timingBudget = 33000;
+            preRangeVcselPeriod = 18;
+            finalRangeVcselPeriod = 14;
+            break;
+    }
 
 	ERR_CHK(VL53L0X_StaticInit(&drv_data->vl53l0x));
 	ERR_CHK(VL53L0X_PerformRefCalibration(&drv_data->vl53l0x, &VhvSettings, &PhaseCal));
@@ -50,25 +107,69 @@ static int vl53l0x_setup_single_shot(vl53l0x_data *drv_data)
 	ERR_CHK(VL53L0X_SetDeviceMode(&drv_data->vl53l0x, VL53L0X_DEVICEMODE_SINGLE_RANGING));
 	ERR_CHK(VL53L0X_SetLimitCheckEnable(&drv_data->vl53l0x, VL53L0X_CHECKENABLE_SIGMA_FINAL_RANGE, 1));
 	ERR_CHK(VL53L0X_SetLimitCheckEnable(&drv_data->vl53l0x, VL53L0X_CHECKENABLE_SIGNAL_RATE_FINAL_RANGE, 1));
-	ERR_CHK(VL53L0X_SetLimitCheckValue(&drv_data->vl53l0x, VL53L0X_CHECKENABLE_SIGNAL_RATE_FINAL_RANGE, VL53L0X_SETUP_SIGNAL_LIMIT));
-	ERR_CHK(VL53L0X_SetLimitCheckValue(&drv_data->vl53l0x, VL53L0X_CHECKENABLE_SIGMA_FINAL_RANGE, VL53L0X_SETUP_SIGMA_LIMIT));
-	ERR_CHK(VL53L0X_SetMeasurementTimingBudgetMicroSeconds(&drv_data->vl53l0x, VL53L0X_SETUP_MAX_TIME_FOR_RANGING));
-	ERR_CHK(VL53L0X_SetVcselPulsePeriod(&drv_data->vl53l0x, VL53L0X_VCSEL_PERIOD_PRE_RANGE, VL53L0X_SETUP_PRE_RANGE_VCSEL_PERIOD));
-	ERR_CHK(VL53L0X_SetVcselPulsePeriod(&drv_data->vl53l0x, VL53L0X_VCSEL_PERIOD_FINAL_RANGE, VL53L0X_SETUP_FINAL_RANGE_VCSEL_PERIOD));
+	ERR_CHK(VL53L0X_SetLimitCheckValue(&drv_data->vl53l0x, VL53L0X_CHECKENABLE_SIGNAL_RATE_FINAL_RANGE, signalLimit));
+	ERR_CHK(VL53L0X_SetLimitCheckValue(&drv_data->vl53l0x, VL53L0X_CHECKENABLE_SIGMA_FINAL_RANGE, sigmaLimit));
+	ERR_CHK(VL53L0X_SetMeasurementTimingBudgetMicroSeconds(&drv_data->vl53l0x, timingBudget));
+	ERR_CHK(VL53L0X_SetVcselPulsePeriod(&drv_data->vl53l0x, VL53L0X_VCSEL_PERIOD_PRE_RANGE, preRangeVcselPeriod));
+	ERR_CHK(VL53L0X_SetVcselPulsePeriod(&drv_data->vl53l0x, VL53L0X_VCSEL_PERIOD_FINAL_RANGE, finalRangeVcselPeriod));
+    return 0;
 }
 
+static int vl53l0x_setup_continuous_interrupt(vl53l0x_data *drv_data)
+{
+    uint8_t VhvSettings;
+	uint8_t PhaseCal;
+	uint32_t refSpadCount;
+	uint8_t isApertureSpads;
 
-int vl53l0x_init(vl53l0x_data *drv_data)
+    /* Initialize the device in continuous ranging mode */
+	ERR_CHK(VL53L0X_StaticInit(&drv_data->vl53l0x));
+	ERR_CHK(VL53L0X_PerformRefCalibration(&drv_data->vl53l0x, &VhvSettings, &PhaseCal));
+	ERR_CHK(VL53L0X_PerformRefSpadManagement(&drv_data->vl53l0x, &refSpadCount, &isApertureSpads));
+	ERR_CHK(VL53L0X_SetInterMeasurementPeriodMilliSeconds(&drv_data->vl53l0x, 250));
+	ERR_CHK(VL53L0X_SetDeviceMode(&drv_data->vl53l0x, VL53L0X_DEVICEMODE_CONTINUOUS_RANGING));
+    return 0;
+}
+
+int vl53l0x_start_continuous_interrupt_measure(vl53l0x_data *drv_data)
+{
+    int status = 0;
+    /* set sensor interrupt mode */
+    VL53L0X_StopMeasurement(&drv_data->vl53l0x);           // it is safer to do this while sensor is stopped
+    VL53L0X_SetInterruptThresholds(&drv_data->vl53l0x, VL53L0X_DEVICEMODE_CONTINUOUS_RANGING,  CONFIG_VL53L0X_INT_THRESH_LOW,  CONFIG_VL53L0X_INT_THRESH_HIGH);
+    status = VL53L0X_SetGpioConfig(&drv_data->vl53l0x, 0, VL53L0X_DEVICEMODE_CONTINUOUS_RANGING, VL53L0X_GPIOFUNCTIONALITY_THRESHOLD_CROSSED_LOW, VL53L0X_INTERRUPTPOLARITY_HIGH);
+    status = VL53L0X_ClearInterruptMask(&drv_data->vl53l0x, -1); // clear interrupt pending if any
+
+    /* Start continuous ranging */
+    VL53L0X_StartMeasurement(&drv_data->vl53l0x);
+
+    return status;
+}
+
+int vl53l0x_stop_continuous_interrupt_measure(vl53l0x_data *drv_data)
+{
+    /* Stop continuous ranging */
+    VL53L0X_StopMeasurement(&drv_data->vl53l0x);
+
+    /* Ensure device is ready for other commands */
+    WaitStopCompleted(&drv_data->vl53l0x);
+}
+
+int vl53l0x_init(vl53l0x_data *drv_data, uint8_t new_adrs, uint16_t xshut_pin, vl53l0x_range range, vl53l0x_mode mode)
 {
 	VL53L0X_Error ret;
 	uint16_t vl53l0x_id = 0U;
 	VL53L0X_DeviceInfo_t vl53l0x_dev_info;
-
-    // TODO: Possibly need to setup xshut Device address stuff here
+    new_adrs = new_adrs<<1;
 
 	drv_data->vl53l0x.I2cDevAddr = VL53L0X_INITIAL_ADDR;
 
-    if(VL53L0X_GetStatus(drv_data))
+    GPIOB->BSRR = xshut_pin;
+
+    // Set to 400Khz before changing addresses or something?
+    //VL53L0X_WrByte(&drv_data->vl53l0x, 0x88, 0x00);
+
+    if(VL53L0X_GetStatus(&drv_data->vl53l0x))
     {
         return 1;
     }
@@ -90,9 +191,29 @@ int vl53l0x_init(vl53l0x_data *drv_data)
 		return 1;
 	}
 
+    ERR_CHK(VL53L0X_SetDeviceAddress(&drv_data->vl53l0x, new_adrs));
+    drv_data->vl53l0x.I2cDevAddr = new_adrs;
+
+    ret = VL53L0X_RdWord(&drv_data->vl53l0x, VL53L0X_REG_WHO_AM_I, (uint16_t *) &vl53l0x_id);
+	if ((ret < 0) || (vl53l0x_id != VL53L0X_CHIP_ID)) {
+		return 1;
+	}
+
 	/* sensor init */
 	ERR_CHK(VL53L0X_DataInit(&drv_data->vl53l0x));
-	ERR_CHK(vl53l0x_setup_single_shot(drv_data));
+    drv_data->vl53l0x.Present = 1;
+
+    switch(mode)
+    {
+        case MODE_SINGLE_SHOT:
+            ERR_CHK(vl53l0x_setup_single_shot(drv_data, range));
+            break;
+        case MODE_CONT_INTERRUPT:
+            ERR_CHK(vl53l0x_setup_continuous_interrupt(drv_data));
+            break;
+        default:
+            return 1;
+    }
 
 	return 0;
 }

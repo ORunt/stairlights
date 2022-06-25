@@ -148,54 +148,114 @@
           <Name>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0STM32F0xx_32 -FS08000000 -FL08000 -FP0($$Device:STM32F030C6Tx$CMSIS\Flash\STM32F0xx_32.FLM))</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint/>
+      <Breakpoint>
+        <Bp>
+          <Number>0</Number>
+          <Type>0</Type>
+          <LineNumber>31</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134244162</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\src\main.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\stairlights\src/main.c\31</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>36</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134244182</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\src\main.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\stairlights\src/main.c\36</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>95</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134245366</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\drivers\vl53l0x\platform\vl53l0x.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\stairlights\drivers/vl53l0x/platform/vl53l0x.c\95</Expression>
+        </Bp>
+        <Bp>
+          <Number>3</Number>
+          <Type>0</Type>
+          <LineNumber>531</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>0</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>0</BreakIfRCount>
+          <Filename>C:\Cam\Sourcecode\cams_projects\stairlights\STM32\src\stairlight_functions.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression></Expression>
+        </Bp>
+      </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>SystemCoreClock</ItemText>
+          <ItemText>result,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>RCC_Clocks</ItemText>
+          <ItemText>drv_data-&gt;RangingMeasurementData.RangeMilliMeter,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>2</count>
           <WinNumber>1</WinNumber>
-          <ItemText>buffer[0]</ItemText>
+          <ItemText>arr_cnt,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>3</count>
           <WinNumber>1</WinNumber>
-          <ItemText>buffer[1]</ItemText>
+          <ItemText>down_arr,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>4</count>
           <WinNumber>1</WinNumber>
-          <ItemText>buffer[2]</ItemText>
+          <ItemText>up_arr,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>5</count>
           <WinNumber>1</WinNumber>
-          <ItemText>buf[2]</ItemText>
+          <ItemText>vl53l0x_top</ItemText>
         </Ww>
         <Ww>
           <count>6</count>
           <WinNumber>1</WinNumber>
-          <ItemText>us_timer_counter,0x0A</ItemText>
-        </Ww>
-        <Ww>
-          <count>7</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>vl53l0x_dev_info.Name</ItemText>
+          <ItemText>vl53l0x_bottom</ItemText>
         </Ww>
       </WatchWindow1>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
-          <ItemText>val</ItemText>
+          <ItemText>up_arr</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>
@@ -253,7 +313,7 @@
 
   <Group>
     <GroupName>src</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -276,8 +336,80 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\stairlight_functions.c</PathWithFileName>
-      <FilenameWithoutPath>stairlight_functions.c</FilenameWithoutPath>
+      <PathWithFileName>.\src\func_buttons.c</PathWithFileName>
+      <FilenameWithoutPath>func_buttons.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>3</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\func_ldr.c</PathWithFileName>
+      <FilenameWithoutPath>func_ldr.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>4</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\func_led.c</PathWithFileName>
+      <FilenameWithoutPath>func_led.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>5</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\func_testing.c</PathWithFileName>
+      <FilenameWithoutPath>func_testing.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>6</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\func_vl53l0x.c</PathWithFileName>
+      <FilenameWithoutPath>func_vl53l0x.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>7</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\i2c_comms.c</PathWithFileName>
+      <FilenameWithoutPath>i2c_comms.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>8</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\src\graph_lookup_table.c</PathWithFileName>
+      <FilenameWithoutPath>graph_lookup_table.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -285,82 +417,10 @@
 
   <Group>
     <GroupName>periphials</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
-    <File>
-      <GroupNumber>2</GroupNumber>
-      <FileNumber>3</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\src\stm32f0xx_exti.c</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_exti.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>2</GroupNumber>
-      <FileNumber>4</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\src\stm32f0xx_gpio.c</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_gpio.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>2</GroupNumber>
-      <FileNumber>5</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\src\stm32f0xx_rcc.c</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_rcc.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>2</GroupNumber>
-      <FileNumber>6</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\src\stm32f0xx_rtc.c</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_rtc.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>2</GroupNumber>
-      <FileNumber>7</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\src\stm32f0xx_tim.c</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_tim.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>2</GroupNumber>
-      <FileNumber>8</FileNumber>
-      <FileType>1</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\src\stm32f0xx_usart.c</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_usart.c</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
     <File>
       <GroupNumber>2</GroupNumber>
       <FileNumber>9</FileNumber>
@@ -368,8 +428,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\stm32f0xx_misc.c</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_misc.c</FilenameWithoutPath>
+      <PathWithFileName>.\drivers\stm32f0xx\src\stm32f0xx_adc.c</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_adc.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -380,8 +440,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\stm32f0xx_syscfg.c</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_syscfg.c</FilenameWithoutPath>
+      <PathWithFileName>.\drivers\stm32f0xx\src\stm32f0xx_exti.c</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_exti.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -392,8 +452,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\stm32_i2c_high_level.c</PathWithFileName>
-      <FilenameWithoutPath>stm32_i2c_high_level.c</FilenameWithoutPath>
+      <PathWithFileName>.\drivers\stm32f0xx\src\stm32f0xx_gpio.c</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_gpio.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -404,7 +464,7 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\stm32f0xx_i2c.c</PathWithFileName>
+      <PathWithFileName>.\drivers\stm32f0xx\src\stm32f0xx_i2c.c</PathWithFileName>
       <FilenameWithoutPath>stm32f0xx_i2c.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
@@ -416,8 +476,68 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\src\stm32f0xx_adc.c</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_adc.c</FilenameWithoutPath>
+      <PathWithFileName>.\drivers\stm32f0xx\src\stm32f0xx_misc.c</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_misc.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>14</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\drivers\stm32f0xx\src\stm32f0xx_rcc.c</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_rcc.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>15</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\drivers\stm32f0xx\src\stm32f0xx_rtc.c</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_rtc.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>16</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\drivers\stm32f0xx\src\stm32f0xx_syscfg.c</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_syscfg.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>17</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\drivers\stm32f0xx\src\stm32f0xx_tim.c</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_tim.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>18</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\drivers\stm32f0xx\src\stm32f0xx_usart.c</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_usart.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -425,70 +545,10 @@
 
   <Group>
     <GroupName>inc</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>14</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\inc\stm32f0xx.h</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx.h</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>15</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\inc\stm32f0xx_exti.h</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_exti.h</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>16</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\inc\stm32f0xx_gpio.h</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_gpio.h</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>17</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\inc\stm32f0xx_rcc.h</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_rcc.h</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>18</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\inc\stm32f0xx_rtc.h</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_rtc.h</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
     <File>
       <GroupNumber>3</GroupNumber>
       <FileNumber>19</FileNumber>
@@ -496,8 +556,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\inc\stm32f0xx_tim.h</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_tim.h</FilenameWithoutPath>
+      <PathWithFileName>.\inc\func_buttons.h</PathWithFileName>
+      <FilenameWithoutPath>func_buttons.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -508,8 +568,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\inc\stm32f0xx_usart.h</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_usart.h</FilenameWithoutPath>
+      <PathWithFileName>.\inc\func_ldr.h</PathWithFileName>
+      <FilenameWithoutPath>func_ldr.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -520,8 +580,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\inc\system_stm32f0xx.h</PathWithFileName>
-      <FilenameWithoutPath>system_stm32f0xx.h</FilenameWithoutPath>
+      <PathWithFileName>.\inc\func_led.h</PathWithFileName>
+      <FilenameWithoutPath>func_led.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -532,8 +592,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\inc\stm32f0xx_conf.h</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_conf.h</FilenameWithoutPath>
+      <PathWithFileName>.\inc\func_vl53l0x.h</PathWithFileName>
+      <FilenameWithoutPath>func_vl53l0x.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -544,8 +604,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\inc\stm32f0xx_misc.h</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_misc.h</FilenameWithoutPath>
+      <PathWithFileName>.\inc\graph_lookup_table.h</PathWithFileName>
+      <FilenameWithoutPath>graph_lookup_table.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -556,8 +616,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\inc\stm32f0xx_syscfg.h</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_syscfg.h</FilenameWithoutPath>
+      <PathWithFileName>.\inc\i2c_comms.h</PathWithFileName>
+      <FilenameWithoutPath>i2c_comms.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -580,54 +640,6 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\inc\stairlight_functions.h</PathWithFileName>
-      <FilenameWithoutPath>stairlight_functions.h</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>27</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\inc\graph_lookup_table.h</PathWithFileName>
-      <FilenameWithoutPath>graph_lookup_table.h</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>28</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\inc\stm32_i2c_high_level.h</PathWithFileName>
-      <FilenameWithoutPath>stm32_i2c_high_level.h</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>29</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\inc\stm32f0xx_i2c.h</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_i2c.h</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>30</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
       <PathWithFileName>.\drivers\vl53l0x\platform\vl53l0x.h</PathWithFileName>
       <FilenameWithoutPath>vl53l0x.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
@@ -635,7 +647,7 @@
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
-      <FileNumber>31</FileNumber>
+      <FileNumber>27</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -647,13 +659,61 @@
     </File>
     <File>
       <GroupNumber>3</GroupNumber>
+      <FileNumber>28</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\drivers\stm32f0xx\inc\stm32f0xx.h</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>29</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\drivers\stm32f0xx\inc\stm32f0xx_adc.h</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_adc.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>30</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\drivers\stm32f0xx\inc\stm32f0xx_conf.h</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_conf.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>31</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\drivers\stm32f0xx\inc\stm32f0xx_exti.h</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_exti.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
       <FileNumber>32</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\drivers\vl53l0x\platform\vl53l0x_platform_log.h</PathWithFileName>
-      <FilenameWithoutPath>vl53l0x_platform_log.h</FilenameWithoutPath>
+      <PathWithFileName>.\drivers\stm32f0xx\inc\stm32f0xx_gpio.h</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_gpio.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -664,8 +724,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\drivers\vl53l0x\core\inc\vl53l0x_api.h</PathWithFileName>
-      <FilenameWithoutPath>vl53l0x_api.h</FilenameWithoutPath>
+      <PathWithFileName>.\drivers\stm32f0xx\inc\stm32f0xx_i2c.h</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_i2c.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -676,8 +736,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\drivers\vl53l0x\core\inc\vl53l0x_api_calibration.h</PathWithFileName>
-      <FilenameWithoutPath>vl53l0x_api_calibration.h</FilenameWithoutPath>
+      <PathWithFileName>.\drivers\stm32f0xx\inc\stm32f0xx_misc.h</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_misc.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -688,8 +748,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\drivers\vl53l0x\core\inc\vl53l0x_api_core.h</PathWithFileName>
-      <FilenameWithoutPath>vl53l0x_api_core.h</FilenameWithoutPath>
+      <PathWithFileName>.\drivers\stm32f0xx\inc\stm32f0xx_rcc.h</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_rcc.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -700,8 +760,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\drivers\vl53l0x\core\inc\vl53l0x_api_ranging.h</PathWithFileName>
-      <FilenameWithoutPath>vl53l0x_api_ranging.h</FilenameWithoutPath>
+      <PathWithFileName>.\drivers\stm32f0xx\inc\stm32f0xx_rtc.h</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_rtc.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -712,8 +772,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\drivers\vl53l0x\core\inc\vl53l0x_api_strings.h</PathWithFileName>
-      <FilenameWithoutPath>vl53l0x_api_strings.h</FilenameWithoutPath>
+      <PathWithFileName>.\drivers\stm32f0xx\inc\stm32f0xx_syscfg.h</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_syscfg.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -724,8 +784,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\drivers\vl53l0x\core\inc\vl53l0x_def.h</PathWithFileName>
-      <FilenameWithoutPath>vl53l0x_def.h</FilenameWithoutPath>
+      <PathWithFileName>.\drivers\stm32f0xx\inc\stm32f0xx_tim.h</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_tim.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -736,8 +796,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\drivers\vl53l0x\core\inc\vl53l0x_device.h</PathWithFileName>
-      <FilenameWithoutPath>vl53l0x_device.h</FilenameWithoutPath>
+      <PathWithFileName>.\drivers\stm32f0xx\inc\stm32f0xx_usart.h</PathWithFileName>
+      <FilenameWithoutPath>stm32f0xx_usart.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -748,44 +808,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\drivers\vl53l0x\core\inc\vl53l0x_interrupt_threshold_settings.h</PathWithFileName>
-      <FilenameWithoutPath>vl53l0x_interrupt_threshold_settings.h</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>41</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\drivers\vl53l0x\core\inc\vl53l0x_tuning.h</PathWithFileName>
-      <FilenameWithoutPath>vl53l0x_tuning.h</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>42</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\drivers\vl53l0x\platform\vl53l0x_types.h</PathWithFileName>
-      <FilenameWithoutPath>vl53l0x_types.h</FilenameWithoutPath>
-      <RteFlg>0</RteFlg>
-      <bShared>0</bShared>
-    </File>
-    <File>
-      <GroupNumber>3</GroupNumber>
-      <FileNumber>43</FileNumber>
-      <FileType>5</FileType>
-      <tvExp>0</tvExp>
-      <tvExpOptDlg>0</tvExpOptDlg>
-      <bDave2>0</bDave2>
-      <PathWithFileName>.\inc\stm32f0xx_adc.h</PathWithFileName>
-      <FilenameWithoutPath>stm32f0xx_adc.h</FilenameWithoutPath>
+      <PathWithFileName>.\drivers\stm32f0xx\inc\system_stm32f0xx.h</PathWithFileName>
+      <FilenameWithoutPath>system_stm32f0xx.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -793,13 +817,13 @@
 
   <Group>
     <GroupName>drivers</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>4</GroupNumber>
-      <FileNumber>44</FileNumber>
+      <FileNumber>41</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -811,7 +835,7 @@
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
-      <FileNumber>45</FileNumber>
+      <FileNumber>42</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -823,7 +847,7 @@
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
-      <FileNumber>46</FileNumber>
+      <FileNumber>43</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -835,7 +859,7 @@
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
-      <FileNumber>47</FileNumber>
+      <FileNumber>44</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -847,7 +871,7 @@
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
-      <FileNumber>48</FileNumber>
+      <FileNumber>45</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -859,7 +883,7 @@
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
-      <FileNumber>49</FileNumber>
+      <FileNumber>46</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -871,7 +895,7 @@
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
-      <FileNumber>50</FileNumber>
+      <FileNumber>47</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -883,7 +907,7 @@
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
-      <FileNumber>51</FileNumber>
+      <FileNumber>48</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>

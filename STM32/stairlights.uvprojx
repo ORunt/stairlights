@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER</Define>
               <Undefine></Undefine>
-              <IncludePath>.\src;.\inc;.\drivers\vl53l0x\core\src;.\drivers\vl53l0x\core\inc;.\drivers\vl53l0x\platform</IncludePath>
+              <IncludePath>.\src;.\inc;.\drivers\vl53l0x\core\src;.\drivers\vl53l0x\core\inc;.\drivers\vl53l0x\platform;.\drivers\stm32f0xx\inc;.\drivers\stm32f0xx\src</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -389,9 +389,39 @@
               <FilePath>.\src\main.c</FilePath>
             </File>
             <File>
-              <FileName>stairlight_functions.c</FileName>
+              <FileName>func_buttons.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\stairlight_functions.c</FilePath>
+              <FilePath>.\src\func_buttons.c</FilePath>
+            </File>
+            <File>
+              <FileName>func_ldr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\func_ldr.c</FilePath>
+            </File>
+            <File>
+              <FileName>func_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\func_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>func_testing.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\func_testing.c</FilePath>
+            </File>
+            <File>
+              <FileName>func_vl53l0x.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\func_vl53l0x.c</FilePath>
+            </File>
+            <File>
+              <FileName>i2c_comms.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\i2c_comms.c</FilePath>
+            </File>
+            <File>
+              <FileName>graph_lookup_table.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\graph_lookup_table.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -399,59 +429,54 @@
           <GroupName>periphials</GroupName>
           <Files>
             <File>
+              <FileName>stm32f0xx_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\drivers\stm32f0xx\src\stm32f0xx_adc.c</FilePath>
+            </File>
+            <File>
               <FileName>stm32f0xx_exti.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\stm32f0xx_exti.c</FilePath>
+              <FilePath>.\drivers\stm32f0xx\src\stm32f0xx_exti.c</FilePath>
             </File>
             <File>
               <FileName>stm32f0xx_gpio.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\stm32f0xx_gpio.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f0xx_rcc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\stm32f0xx_rcc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f0xx_rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\stm32f0xx_rtc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f0xx_tim.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\stm32f0xx_tim.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f0xx_usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\stm32f0xx_usart.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f0xx_misc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\stm32f0xx_misc.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f0xx_syscfg.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\stm32f0xx_syscfg.c</FilePath>
-            </File>
-            <File>
-              <FileName>stm32_i2c_high_level.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\src\stm32_i2c_high_level.c</FilePath>
+              <FilePath>.\drivers\stm32f0xx\src\stm32f0xx_gpio.c</FilePath>
             </File>
             <File>
               <FileName>stm32f0xx_i2c.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\stm32f0xx_i2c.c</FilePath>
+              <FilePath>.\drivers\stm32f0xx\src\stm32f0xx_i2c.c</FilePath>
             </File>
             <File>
-              <FileName>stm32f0xx_adc.c</FileName>
+              <FileName>stm32f0xx_misc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\src\stm32f0xx_adc.c</FilePath>
+              <FilePath>.\drivers\stm32f0xx\src\stm32f0xx_misc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_rcc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\drivers\stm32f0xx\src\stm32f0xx_rcc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\drivers\stm32f0xx\src\stm32f0xx_rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_syscfg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\drivers\stm32f0xx\src\stm32f0xx_syscfg.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_tim.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\drivers\stm32f0xx\src\stm32f0xx_tim.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\drivers\stm32f0xx\src\stm32f0xx_usart.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -459,69 +484,24 @@
           <GroupName>inc</GroupName>
           <Files>
             <File>
-              <FileName>stm32f0xx.h</FileName>
+              <FileName>func_buttons.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\inc\stm32f0xx.h</FilePath>
+              <FilePath>.\inc\func_buttons.h</FilePath>
             </File>
             <File>
-              <FileName>stm32f0xx_exti.h</FileName>
+              <FileName>func_ldr.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\inc\stm32f0xx_exti.h</FilePath>
+              <FilePath>.\inc\func_ldr.h</FilePath>
             </File>
             <File>
-              <FileName>stm32f0xx_gpio.h</FileName>
+              <FileName>func_led.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\inc\stm32f0xx_gpio.h</FilePath>
+              <FilePath>.\inc\func_led.h</FilePath>
             </File>
             <File>
-              <FileName>stm32f0xx_rcc.h</FileName>
+              <FileName>func_vl53l0x.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\inc\stm32f0xx_rcc.h</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f0xx_rtc.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\stm32f0xx_rtc.h</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f0xx_tim.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\stm32f0xx_tim.h</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f0xx_usart.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\stm32f0xx_usart.h</FilePath>
-            </File>
-            <File>
-              <FileName>system_stm32f0xx.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\system_stm32f0xx.h</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f0xx_conf.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\stm32f0xx_conf.h</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f0xx_misc.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\stm32f0xx_misc.h</FilePath>
-            </File>
-            <File>
-              <FileName>stm32f0xx_syscfg.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\stm32f0xx_syscfg.h</FilePath>
-            </File>
-            <File>
-              <FileName>main.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\main.h</FilePath>
-            </File>
-            <File>
-              <FileName>stairlight_functions.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\inc\stairlight_functions.h</FilePath>
+              <FilePath>.\inc\func_vl53l0x.h</FilePath>
             </File>
             <File>
               <FileName>graph_lookup_table.h</FileName>
@@ -529,14 +509,14 @@
               <FilePath>.\inc\graph_lookup_table.h</FilePath>
             </File>
             <File>
-              <FileName>stm32_i2c_high_level.h</FileName>
+              <FileName>i2c_comms.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\inc\stm32_i2c_high_level.h</FilePath>
+              <FilePath>.\inc\i2c_comms.h</FilePath>
             </File>
             <File>
-              <FileName>stm32f0xx_i2c.h</FileName>
+              <FileName>main.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\inc\stm32f0xx_i2c.h</FilePath>
+              <FilePath>.\inc\main.h</FilePath>
             </File>
             <File>
               <FileName>vl53l0x.h</FileName>
@@ -549,64 +529,69 @@
               <FilePath>.\drivers\vl53l0x\platform\vl53l0x_platform.h</FilePath>
             </File>
             <File>
-              <FileName>vl53l0x_platform_log.h</FileName>
+              <FileName>stm32f0xx.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\drivers\vl53l0x\platform\vl53l0x_platform_log.h</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_api.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\drivers\vl53l0x\core\inc\vl53l0x_api.h</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_api_calibration.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\drivers\vl53l0x\core\inc\vl53l0x_api_calibration.h</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_api_core.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\drivers\vl53l0x\core\inc\vl53l0x_api_core.h</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_api_ranging.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\drivers\vl53l0x\core\inc\vl53l0x_api_ranging.h</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_api_strings.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\drivers\vl53l0x\core\inc\vl53l0x_api_strings.h</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_def.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\drivers\vl53l0x\core\inc\vl53l0x_def.h</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_device.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\drivers\vl53l0x\core\inc\vl53l0x_device.h</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_interrupt_threshold_settings.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\drivers\vl53l0x\core\inc\vl53l0x_interrupt_threshold_settings.h</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_tuning.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\drivers\vl53l0x\core\inc\vl53l0x_tuning.h</FilePath>
-            </File>
-            <File>
-              <FileName>vl53l0x_types.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\drivers\vl53l0x\platform\vl53l0x_types.h</FilePath>
+              <FilePath>.\drivers\stm32f0xx\inc\stm32f0xx.h</FilePath>
             </File>
             <File>
               <FileName>stm32f0xx_adc.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\inc\stm32f0xx_adc.h</FilePath>
+              <FilePath>.\drivers\stm32f0xx\inc\stm32f0xx_adc.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_conf.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\drivers\stm32f0xx\inc\stm32f0xx_conf.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_exti.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\drivers\stm32f0xx\inc\stm32f0xx_exti.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_gpio.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\drivers\stm32f0xx\inc\stm32f0xx_gpio.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_i2c.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\drivers\stm32f0xx\inc\stm32f0xx_i2c.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_misc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\drivers\stm32f0xx\inc\stm32f0xx_misc.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_rcc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\drivers\stm32f0xx\inc\stm32f0xx_rcc.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_rtc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\drivers\stm32f0xx\inc\stm32f0xx_rtc.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_syscfg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\drivers\stm32f0xx\inc\stm32f0xx_syscfg.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_tim.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\drivers\stm32f0xx\inc\stm32f0xx_tim.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_usart.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\drivers\stm32f0xx\inc\stm32f0xx_usart.h</FilePath>
+            </File>
+            <File>
+              <FileName>system_stm32f0xx.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\drivers\stm32f0xx\inc\system_stm32f0xx.h</FilePath>
             </File>
           </Files>
         </Group>

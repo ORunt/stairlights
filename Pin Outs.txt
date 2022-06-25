@@ -3,11 +3,12 @@ LED strip lights
 	GPIOB, pins 6 - 7
 
 Push Buttons
-	GPIOB, pins 1 - 4
+	GPIOB, pins 3 - 4
 
 TOF sensors
 	GPIOB, pins 8 - 9
 	GPIOB, pins 10 - 11 (xshut)
+	GPIOB, pins 1 - 2 (GPIO interrupts)
 
 ADC LDR
 	GPIOB, pin 0

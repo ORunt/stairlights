@@ -1,11 +1,11 @@
 /**
   ******************************************************************************
-  * @file    stm32_i2c_high_level.h
+  * @file    i2c_comms.h
   * @author  MCD Application Team and Cam Sharp mods
   * @version V1.1.1
   * @date    16-January-2014
   * @brief   This file contains all the functions prototypes for the
-  *          stm32_i2c_high_level.c firmware driver.
+  *          i2c_comms.c firmware driver.
   ******************************************************************************
   * @attention
   *
@@ -27,8 +27,8 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __STM32_I2C_HIGH_LEVEL_H
-#define __STM32_I2C_HIGH_LEVEL_H
+#ifndef __I2C_COMMS_H
+#define __I2C_COMMS_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -56,17 +56,11 @@
 /**
   * @brief  Block Size
   */
-//#define LM75_REG_TEMP       0x00  /* Temperature Register of LM75 */
-//#define LM75_REG_CONF       0x01  /* Configuration Register of LM75 */
-//#define LM75_REG_THYS       0x02  /* Temperature Register of LM75 */
-//#define LM75_REG_TOS        0x03  /* Over-temp Shutdown threshold Register of LM75 */
 #define I2C_TIMEOUT         ((uint32_t)0x3FFFF) /* I2C Time out */
-//#define LM75_ADDR           0x90   /* LM75 address */
 
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 void HL_I2C_DeInit(uint8_t sda_pin, uint8_t scl_pin);
-void HL_I2C_Init(uint8_t sda_pin, uint8_t scl_pin);
 uint8_t HL_I2C_GetStatus(uint16_t addr);
 uint8_t HL_I2C_Receive(uint16_t addr, uint8_t regName, uint8_t * data, uint32_t count);
 uint8_t HL_I2C_Transmit(uint16_t addr, uint8_t regName, uint8_t * data, uint32_t count);
@@ -90,6 +84,6 @@ uint8_t HL_I2C_Transmit(uint16_t addr, uint8_t regName, uint8_t * data, uint32_t
 }
 #endif
 
-#endif /* __STM32_I2C_HIGH_LEVEL_H */
+#endif /* __I2C_COMMS_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

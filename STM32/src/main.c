@@ -1,28 +1,42 @@
-#include "stm32f0xx.h"
-#include "stairlight_functions.h"
 #include "main.h"
+#include "func_buttons.h"
+#include "func_ldr.h"
+#include "func_led.h"
+#include "func_vl53l0x.h"
+
+bool checkTrigger(direction_e dir)
+{
+    bool result = 0;
+    result |= (bool)checkButtonPress(dir);
+    result |= (bool)checkToF(dir);
+    return result;
+}
+
+void pauseTrigger(bool pause)
+{
+    startTof(!pause);
+}
 
 int main (void)
 {
-    stairlightSetup();
-
-    //startFade(DIR_UP);
-    //hackPwm();
+    ledSetup();
+    ldrSetup();
+    buttonSetup();
+    vl53l0xSetup();
 
     while(1)
     {
-        //hackPwm();
-        /*if((GPIOB->IDR & GPIO_Pin_8))
+        if(checkTrigger(DIR_UP))
         {
+            pauseTrigger(true);
             startFade(DIR_UP);
+            pauseTrigger(false);
         }
-        if((GPIOB->IDR & GPIO_Pin_9))
+        if(checkTrigger(DIR_DOWN))
         {
+            pauseTrigger(true);
             startFade(DIR_DOWN);
-        }*/
-        if(checkToF(DIR_UP))
-        {
-            startFade(DIR_UP);
+            pauseTrigger(false);
         }
     }
 }
