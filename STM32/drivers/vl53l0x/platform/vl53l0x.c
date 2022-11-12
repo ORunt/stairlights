@@ -11,23 +11,66 @@
 #define VL53L0X_REG_WHO_AM_I                    0xC0
 #define VL53L0X_CHIP_ID                         0xEEAA
 
-#define CONFIG_VL53L0X_PROXIMITY_THRESHOLD      100 //(mm)
-#define CONFIG_VL53L0X_INT_THRESH_LOW           300<<16
-#define CONFIG_VL53L0X_INT_THRESH_HIGH          0<<16
+#define CONFIG_VL53L0X_PROXIMITY_THRESHOLD_HIGH 1500 //(mm)
+#define CONFIG_VL53L0X_PROXIMITY_THRESHOLD_LOW  600  //(mm)
+#define CONFIG_VL53L0X_INT_THRESH_LOW           (CONFIG_VL53L0X_PROXIMITY_THRESHOLD_HIGH<<16)
+#define CONFIG_VL53L0X_INT_THRESH_HIGH          (0<<16)
+
+#define FILTER_VL53L0X_THRESHOLD                200 // (mm)
+#define FILTER_VL53L0X_SAMPLE_CNT               1   // (We need this many samples within the threshold to trigger an event)
 
 #define ERR_CHK(x)          {uint16_t call_return = (x) ; if (call_return != 0) return call_return;}
 #define LOG_DBG(msg, ...)
 
 
+static uint8_t filterGetProxState(vl53l0x_data *drv_data)
+{
+    uint8_t ret = 0;
+    
+    if(drv_data->RangingMeasurementData.RangeStatus)
+    {
+        // Something went pear shaped
+        return 0;
+    }
+    else
+    {
+        // If there is a big glitch, don't check the sample
+        if(abs((int)drv_data->RangingMeasurementData.RangeMilliMeter - (int)drv_data->filterData.last_sample) > FILTER_VL53L0X_THRESHOLD)
+        {
+            ret = 0;
+        }
+        else if ((drv_data->RangingMeasurementData.RangeMilliMeter < CONFIG_VL53L0X_PROXIMITY_THRESHOLD_HIGH) && 
+                 (drv_data->RangingMeasurementData.RangeMilliMeter > CONFIG_VL53L0X_PROXIMITY_THRESHOLD_LOW))
+        {
+            // Check how many samples we need within the threshold to give a valid state transition
+            if(++drv_data->filterData.cnt >= FILTER_VL53L0X_SAMPLE_CNT)
+            {
+                drv_data->filterData.cnt = 0;
+                ret = 1;
+            }
+        }
+        drv_data->filterData.last_sample = drv_data->RangingMeasurementData.RangeMilliMeter;
+    }
+    
+    return ret;
+}
+
 int vl53l0x_get_measurement(vl53l0x_data *drv_data, sensor_channel chan, uint16_t *val)
 {
+    *val = 0;       // Reset
+    
     ERR_CHK(VL53L0X_PerformSingleRangingMeasurement(&drv_data->vl53l0x, &drv_data->RangingMeasurementData));
-
+    
+    if (drv_data->RangingMeasurementData.RangeMilliMeter == 0)
+    {
+        return 1;   // Unknown error
+    }
+    
 	if (chan == SENSOR_CHAN_PROX){
-        *val = (drv_data->RangingMeasurementData.RangeMilliMeter <= CONFIG_VL53L0X_PROXIMITY_THRESHOLD);
+        *val = (int)filterGetProxState(drv_data);
 	}
     else{
-		*val = drv_data->RangingMeasurementData.RangeMilliMeter;
+		*val = (int)drv_data->RangingMeasurementData.RangeMilliMeter;
 	}
 
 	return 0;

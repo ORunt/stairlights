@@ -4,8 +4,8 @@
 
 #ifdef TRIGGER_VL53L0X
 
-//#define TRIGGER_VL53L0X_POLL    // Define to use the TOF sensors to trigger stair lights in Polling mode
-#define TRIGGER_VL53L0X_INT     // Define to use the TOF sensors to trigger stair lights in Interrupt mode
+//#define TRIGGER_VL53L0X_INT     // Define to use the TOF sensors to trigger stair lights in Interrupt mode
+                                // Undefine for polling mode
 //#define ENABLE_VL53L0X_TOP      // Enable sensor 2
 #define ENABLE_VL53L0X_BOTTOM   // Enable sensor 1
 
@@ -213,9 +213,11 @@ void startTof(bool start)
     {
 #ifdef ENABLE_VL53L0X_BOTTOM
         vl53l0x_start_continuous_interrupt_measure(&vl53l0x_bottom);
+        VL53L0X_ClearInterruptMask(&vl53l0x_bottom.vl53l0x, -1);
 #endif
 #ifdef ENABLE_VL53L0X_TOP
         vl53l0x_start_continuous_interrupt_measure(&vl53l0x_top);
+        VL53L0X_ClearInterruptMask(&vl53l0x_top.vl53l0x, -1);
 #endif
     }
     else
@@ -266,7 +268,7 @@ int checkToF(direction_e up_down)
 
 
 
-#else
+#else // Polling mode
 
 void startTof(bool start){}
 
@@ -280,6 +282,7 @@ void vl53l0xSetup(void)
     vl53l0x_init(&vl53l0x_top, 0x31, GPIO_XSHUT_TOP_PIN, LONG_RANGE, MODE_SINGLE_SHOT);
 #endif
 }
+
 
 int checkToF(direction_e up_down)
 {

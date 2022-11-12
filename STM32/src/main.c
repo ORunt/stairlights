@@ -1,4 +1,5 @@
 #include "main.h"
+#include "func_debug.h"
 #include "func_buttons.h"
 #include "func_ldr.h"
 #include "func_led.h"
@@ -23,6 +24,9 @@ int main (void)
     ldrSetup();
     buttonSetup();
     vl53l0xSetup();
+    printfSetup();
+    
+    //int d_cnt = 0;
 
     while(1)
     {
@@ -38,5 +42,12 @@ int main (void)
             startFade(DIR_DOWN);
             pauseTrigger(false);
         }
+        /*int i = 0;
+        for(i=0; i<1000000; i++){
+            if (i == (1000000-1)){
+                d_cnt++;
+                DEBUG_PRINT("Count mode x: %d, y: %d\n\r", d_cnt, d_cnt *2);
+            }
+        }*/
     }
 }

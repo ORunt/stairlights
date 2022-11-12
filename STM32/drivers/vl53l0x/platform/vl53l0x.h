@@ -19,8 +19,14 @@ typedef enum{
 }vl53l0x_mode;
 
 typedef struct{
+    int16_t last_sample;
+    uint8_t cnt;
+}vl53l0x_filter;
+
+typedef struct{
 	VL53L0X_Dev_t vl53l0x;
 	VL53L0X_RangingMeasurementData_t RangingMeasurementData;
+    vl53l0x_filter filterData;
 }vl53l0x_data;
 
 int vl53l0x_init(vl53l0x_data *drv_data, uint8_t new_adrs, uint16_t xshut_pin, vl53l0x_range range, vl53l0x_mode mode);

@@ -31,10 +31,10 @@ typedef uint8_t bool;
 
 // ============================= LED Strip configs =============================
 #define FADE_DURATION   1000    // The time for one LED to fade on fully (ms)
-#define STEPS_DURATION  5000    // The time for all the steps to light up (ms)
+#define STEPS_DURATION  4000    // The time for all the steps to light up (ms)
 #define GAP_DURATION    2000    // The time between the lights being fully on and when the lights start turning off again (ms)
-#define MAX_BRIGHTNESS_DAY   80 // Value where the LED brightness should be capped (%)
-#define MAX_BRIGHTNESS_NIGHT 30 // Value where the LED brightness should be capped (%)
+#define MAX_BRIGHTNESS_DAY   100 // Value where the LED brightness should be capped (%)
+#define MAX_BRIGHTNESS_NIGHT 20 // Value where the LED brightness should be capped (%)
 #define LED_CHANNELS    12      // Number of stairs. Don't change
 #define FREQUENCY       400     // The frequency of the PWM signal (Hz) (Tested up to 400Hz)
 #define STAIR_FUNCTION  PARABOLA_SS
@@ -43,7 +43,8 @@ typedef uint8_t bool;
 // ============================== LED trigger settings ==============================
 #define TRIGGER_VL53L0X         // Define to use the TOF sensors to trigger stair lights
 //#define TRIGGER_BUTTON          // Define to use push buttons to trigger stair lights
-//#define VARIABLE_BRIGHTNESS     // Enable multiple brightness profiles
+#define VARIABLE_BRIGHTNESS     // Enable multiple brightness profiles
+//#define ENABLE_DEBUG            // printf via USART
 
 // ================================ GPIO PIN defines ================================
 #define GPIO_I2C_SCL                    GPIO_PinSource8
@@ -57,5 +58,6 @@ typedef uint8_t bool;
 #define GPIO_PUSH_BUTTONS_BOTTOM_PIN    GPIO_Pin_4
 #define GPIO_PUSH_BUTTONS_IN            GPIO_PUSH_BUTTONS_TOP_PIN | GPIO_PUSH_BUTTONS_BOTTOM_PIN //GPIO_Pin_8 | GPIO_Pin_9
 #define GPIO_PUSH_BUTTONS_OUT           GPIO_Pin_5 //GPIO_Pin_10 | GPIO_Pin_11 // we should rather connect this to high or ground or whatever
+#define GPIO_USART_TX                   GPIO_PinSource14 //GPIO_PinSource2 //GPIO_PinSource14
 
 #endif // __MAIN_H

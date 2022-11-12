@@ -262,6 +262,16 @@ static void startOnFadeDown(void)
     }
 }
 
+static void forceAllLightsOff(void)
+{
+    int i;
+    memset(led_brightness, 0, LED_CHANNELS);
+    for(i=0; i<LED_CHANNELS; i++)
+    {
+        GPIO_ResetBits(led_channels[i].port, led_channels[i].pin);
+    }
+}
+
 void waitForGap(void)
 {
     us_timer_counter = 0;
@@ -286,6 +296,8 @@ void hackPwm(void)
 }
 
 
+
+
 void startFade(direction_e dir)
 {
     setTimeOfDay(fade_times, &max_brightness);
@@ -295,11 +307,13 @@ void startFade(direction_e dir)
             startOnFadeUp();
             waitForGap();
             startOffFadeUp();
+            forceAllLightsOff();
         break;
         case DIR_DOWN:
             startOnFadeDown();
             waitForGap();
             startOffFadeDown();
+            forceAllLightsOff();
         break;
         default:
             break;

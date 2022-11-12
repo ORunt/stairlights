@@ -3,7 +3,9 @@
 
 #ifdef VARIABLE_BRIGHTNESS
 
-#define ADC_DAY_TIME_THRESHOLD  1500 // Max is 4096
+uint16_t ldr_measurement = 0;
+
+#define ADC_DAY_TIME_THRESHOLD  400 // Max is 4096
 
 void ldrSetup(void)
 {
@@ -59,7 +61,7 @@ static uint16_t getAdcConversion(void)
     while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET);
 
     /* Get ADC1 converted data */
-    return ADC_GetConversionValue(ADC1);
+    return ldr_measurement = ADC_GetConversionValue(ADC1);
 }
 
 static time_e getTimeOfDay(void)
