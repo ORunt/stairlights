@@ -208,7 +208,7 @@ static void startOffFadeDown(void)
             if(led_brightness[i] > 0)
             {
                 // TODO Do i need to add some delta +- times here encase the interrupts are too faaast?
-                if(temp_counter == (fade_times[max_brightness - led_brightness[i]] + stair_times[LED_CHANNELS-1-i]))
+                if(temp_counter >= (fade_times[max_brightness - led_brightness[i]] + stair_times[LED_CHANNELS-1-i]))
                 {
                     led_brightness[i]--;
                 }
@@ -252,7 +252,7 @@ static void startOnFadeDown(void)
         {
             if(led_brightness[i] < max_brightness)
             {
-                if(temp_counter == (fade_times[led_brightness[i]] + stair_times[LED_CHANNELS-1-i]))
+                if(temp_counter >= (fade_times[led_brightness[i]] + stair_times[LED_CHANNELS-1-i]))
                 {
                     led_brightness[i]++;
                 }

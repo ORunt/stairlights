@@ -11,12 +11,6 @@
 #define VL53L0X_REG_WHO_AM_I                    0xC0
 #define VL53L0X_CHIP_ID                         0xEEAA
 
-#define CONFIG_VL53L0X_PROXIMITY_THRESHOLD_HIGH 1500 //(mm)
-#define CONFIG_VL53L0X_PROXIMITY_THRESHOLD_LOW  600  //(mm)
-#define CONFIG_VL53L0X_INT_THRESH_LOW           (CONFIG_VL53L0X_PROXIMITY_THRESHOLD_HIGH<<16)
-#define CONFIG_VL53L0X_INT_THRESH_HIGH          (0<<16)
-
-#define FILTER_VL53L0X_THRESHOLD                200 // (mm)
 #define FILTER_VL53L0X_SAMPLE_CNT               1   // (We need this many samples within the threshold to trigger an event)
 
 #define ERR_CHK(x)          {uint16_t call_return = (x) ; if (call_return != 0) return call_return;}
@@ -35,12 +29,12 @@ static uint8_t filterGetProxState(vl53l0x_data *drv_data)
     else
     {
         // If there is a big glitch, don't check the sample
-        if(abs((int)drv_data->RangingMeasurementData.RangeMilliMeter - (int)drv_data->filterData.last_sample) > FILTER_VL53L0X_THRESHOLD)
+        if(abs((int)drv_data->RangingMeasurementData.RangeMilliMeter - (int)drv_data->filterData.last_sample) > drv_data->threshData.thresh_filt)
         {
             ret = 0;
         }
-        else if ((drv_data->RangingMeasurementData.RangeMilliMeter < CONFIG_VL53L0X_PROXIMITY_THRESHOLD_HIGH) && 
-                 (drv_data->RangingMeasurementData.RangeMilliMeter > CONFIG_VL53L0X_PROXIMITY_THRESHOLD_LOW))
+        else if ((drv_data->RangingMeasurementData.RangeMilliMeter < drv_data->threshData.thresh_high) && 
+                 (drv_data->RangingMeasurementData.RangeMilliMeter > drv_data->threshData.thresh_low))
         {
             // Check how many samples we need within the threshold to give a valid state transition
             if(++drv_data->filterData.cnt >= FILTER_VL53L0X_SAMPLE_CNT)
@@ -179,7 +173,8 @@ int vl53l0x_start_continuous_interrupt_measure(vl53l0x_data *drv_data)
     int status = 0;
     /* set sensor interrupt mode */
     VL53L0X_StopMeasurement(&drv_data->vl53l0x);           // it is safer to do this while sensor is stopped
-    VL53L0X_SetInterruptThresholds(&drv_data->vl53l0x, VL53L0X_DEVICEMODE_CONTINUOUS_RANGING,  CONFIG_VL53L0X_INT_THRESH_LOW,  CONFIG_VL53L0X_INT_THRESH_HIGH);
+    //                                                                                          // LOW THRESH                       // HIGH THRESH
+    VL53L0X_SetInterruptThresholds(&drv_data->vl53l0x, VL53L0X_DEVICEMODE_CONTINUOUS_RANGING,  (drv_data->threshData.thresh_high<<16),  (0<<16));
     status = VL53L0X_SetGpioConfig(&drv_data->vl53l0x, 0, VL53L0X_DEVICEMODE_CONTINUOUS_RANGING, VL53L0X_GPIOFUNCTIONALITY_THRESHOLD_CROSSED_LOW, VL53L0X_INTERRUPTPOLARITY_HIGH);
     status = VL53L0X_ClearInterruptMask(&drv_data->vl53l0x, -1); // clear interrupt pending if any
 
@@ -198,7 +193,7 @@ int vl53l0x_stop_continuous_interrupt_measure(vl53l0x_data *drv_data)
     WaitStopCompleted(&drv_data->vl53l0x);
 }
 
-int vl53l0x_init(vl53l0x_data *drv_data, uint8_t new_adrs, uint16_t xshut_pin, vl53l0x_range range, vl53l0x_mode mode)
+int vl53l0x_init(vl53l0x_data *drv_data, uint8_t new_adrs, uint16_t xshut_pin, vl53l0x_range range, vl53l0x_mode mode, vl53l0x_threshold_t thresh)
 {
 	VL53L0X_Error ret;
 	uint16_t vl53l0x_id = 0U;
@@ -206,6 +201,7 @@ int vl53l0x_init(vl53l0x_data *drv_data, uint8_t new_adrs, uint16_t xshut_pin, v
     new_adrs = new_adrs<<1;
 
 	drv_data->vl53l0x.I2cDevAddr = VL53L0X_INITIAL_ADDR;
+    drv_data->threshData = thresh;
 
     GPIOB->BSRR = xshut_pin;
 

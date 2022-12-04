@@ -6,14 +6,19 @@
 
 //#define TRIGGER_VL53L0X_INT     // Define to use the TOF sensors to trigger stair lights in Interrupt mode
                                 // Undefine for polling mode
-//#define ENABLE_VL53L0X_TOP      // Enable sensor 2
+#define ENABLE_VL53L0X_TOP      // Enable sensor 2
 #define ENABLE_VL53L0X_BOTTOM   // Enable sensor 1
+
+
 
 vl53l0x_data vl53l0x_bottom;
 vl53l0x_data vl53l0x_top;
 volatile bool tof_trigger_top = 0;
 volatile bool tof_trigger_bottom = 0;
 
+// THRESHOLD_LOW (mm), THRESHOLD_HIGH (mm), THRESHOLD_FILTER (mm)
+const vl53l0x_threshold_t tof_thresh_top =      {300, 1500, 600};
+const vl53l0x_threshold_t tof_thresh_bottom =   {600, 1500, 200};
 
   /**
   * @brief  Initializes the I2C on Port B.
@@ -83,8 +88,9 @@ static void I2C_Config(void)
     I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
     //I2C_InitStructure.I2C_Timing = 0x0010020A;    // 344khz
     //I2C_InitStructure.I2C_Timing = 0xF000F3FF;    // 1khz
-    I2C_InitStructure.I2C_Timing =   0x00201D2B;    // 100khz
+    //I2C_InitStructure.I2C_Timing =   0x00201D2B;    // 100khz
     //I2C_InitStructure.I2C_Timing = 0x0000020B;
+    I2C_InitStructure.I2C_Timing = 0x0010021E;    // 200khz
 
     /* Apply I2C1 configuration after enabling it */
     I2C_Init(I2C1, &I2C_InitStructure);
@@ -236,10 +242,10 @@ void vl53l0xSetup(void)
     I2C_Config();
     EXTI0_Config();
 #ifdef ENABLE_VL53L0X_BOTTOM
-    vl53l0x_init(&vl53l0x_bottom, 0x30, GPIO_XSHUT_BOTTOM_PIN, LONG_RANGE, MODE_CONT_INTERRUPT);
+    vl53l0x_init(&vl53l0x_bottom, 0x30, GPIO_XSHUT_BOTTOM_PIN, LONG_RANGE, MODE_CONT_INTERRUPT, tof_thresh_bottom);
 #endif
 #ifdef ENABLE_VL53L0X_TOP
-    vl53l0x_init(&vl53l0x_top, 0x31, GPIO_XSHUT_TOP_PIN, LONG_RANGE, MODE_CONT_INTERRUPT);
+    vl53l0x_init(&vl53l0x_top, 0x31, GPIO_XSHUT_TOP_PIN, LONG_RANGE, MODE_CONT_INTERRUPT, tof_thresh_top);
 #endif
     startTof(true);
 }
@@ -276,10 +282,10 @@ void vl53l0xSetup(void)
 {
     I2C_Config();
 #ifdef ENABLE_VL53L0X_BOTTOM
-    vl53l0x_init(&vl53l0x_bottom, 0x30, GPIO_XSHUT_BOTTOM_PIN, LONG_RANGE, MODE_SINGLE_SHOT);
+    vl53l0x_init(&vl53l0x_bottom, 0x30, GPIO_XSHUT_BOTTOM_PIN, LONG_RANGE, MODE_SINGLE_SHOT, tof_thresh_bottom);
 #endif
 #ifdef ENABLE_VL53L0X_TOP
-    vl53l0x_init(&vl53l0x_top, 0x31, GPIO_XSHUT_TOP_PIN, LONG_RANGE, MODE_SINGLE_SHOT);
+    vl53l0x_init(&vl53l0x_top, 0x31, GPIO_XSHUT_TOP_PIN, LONG_RANGE, MODE_SINGLE_SHOT, tof_thresh_top);
 #endif
 }
 
