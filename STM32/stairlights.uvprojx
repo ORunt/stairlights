@@ -428,6 +428,11 @@
               <FileType>1</FileType>
               <FilePath>.\src\func_debug.c</FilePath>
             </File>
+            <File>
+              <FileName>func_watchdog.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\src\func_watchdog.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -482,6 +487,11 @@
               <FileName>stm32f0xx_usart.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\drivers\stm32f0xx\src\stm32f0xx_usart.c</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_iwdg.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\drivers\stm32f0xx\src\stm32f0xx_iwdg.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -602,6 +612,16 @@
               <FileName>func_debug.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\inc\func_debug.h</FilePath>
+            </File>
+            <File>
+              <FileName>stm32f0xx_iwdg.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\drivers\stm32f0xx\inc\stm32f0xx_iwdg.h</FilePath>
+            </File>
+            <File>
+              <FileName>func_watchdog.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\inc\func_watchdog.h</FilePath>
             </File>
           </Files>
         </Group>

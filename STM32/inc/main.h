@@ -44,7 +44,10 @@ typedef uint8_t bool;
 #define TRIGGER_VL53L0X         // Define to use the TOF sensors to trigger stair lights
 //#define TRIGGER_BUTTON          // Define to use push buttons to trigger stair lights
 #define VARIABLE_BRIGHTNESS     // Enable multiple brightness profiles
+
+// ============================== Maintainance settings ==============================
 //#define ENABLE_DEBUG            // printf via USART
+#define ENABLE_WATCH_DAWG       // Enable the watch dog
 
 // ================================ GPIO PIN defines ================================
 #define GPIO_I2C_SCL                    GPIO_PinSource8

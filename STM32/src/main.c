@@ -4,12 +4,14 @@
 #include "func_ldr.h"
 #include "func_led.h"
 #include "func_vl53l0x.h"
+#include "func_watchdog.h"
 
 bool checkTrigger(direction_e dir)
 {
     bool result = 0;
     result |= (bool)checkButtonPress(dir);
     result |= (bool)checkToF(dir);
+    watchdogPet();
     return result;
 }
 
@@ -25,6 +27,7 @@ int main (void)
     buttonSetup();
     vl53l0xSetup();
     printfSetup();
+    watchdogSetup();
     
     //int d_cnt = 0;
 

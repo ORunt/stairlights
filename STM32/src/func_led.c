@@ -1,5 +1,6 @@
 #include "func_led.h"
 #include "func_ldr.h"
+#include "func_watchdog.h"
 #include "graph_lookup_table.h"
 
 // PSC = ceil((64Mhz x 10us / 160) - 1)
@@ -192,6 +193,7 @@ static void startOnFadeUp(void)
             }
         }
         temp_counter = us_timer_counter;
+        watchdogPet();
     }
 }
 
@@ -215,6 +217,7 @@ static void startOffFadeDown(void)
             }
         }
         temp_counter = us_timer_counter;
+        watchdogPet();
     }
 }
 
@@ -237,6 +240,7 @@ static void startOffFadeUp(void)
             }
         }
         temp_counter = us_timer_counter;
+        watchdogPet();
     }
 }
 
@@ -259,6 +263,7 @@ static void startOnFadeDown(void)
             }
         }
         temp_counter = us_timer_counter;
+        watchdogPet();
     }
 }
 
@@ -275,13 +280,13 @@ static void forceAllLightsOff(void)
 void waitForGap(void)
 {
     us_timer_counter = 0;
-    while(us_timer_counter < CONVERT_2_COUNT(GAP_DURATION)){}
+    while(us_timer_counter < CONVERT_2_COUNT(GAP_DURATION)){watchdogPet();}
 }
 
 void waitForGapv2(uint16_t ms)
 {
     us_timer_counter = 0;
-    while(us_timer_counter < CONVERT_2_COUNT(ms)){}
+    while(us_timer_counter < CONVERT_2_COUNT(ms)){watchdogPet();}
 }
 
 
