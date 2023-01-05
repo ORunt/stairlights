@@ -5,7 +5,7 @@
 
 uint16_t ldr_measurement = 0;
 
-#define ADC_DAY_TIME_THRESHOLD  400 // Max is 4096
+#define ADC_DAY_TIME_THRESHOLD  50 //400 // Max is 4096
 
 void ldrSetup(void)
 {
@@ -75,7 +75,7 @@ void ldrSetup(void){}
 
 #endif // VARIABLE_BRIGHTNESS
 
-time_e setTimeOfDay(uint32_t * fade_times, uint8_t * max_brightness)
+time_e setTimeOfDay(const uint32_t * fade_times, uint8_t * max_brightness)
 {
 #ifdef VARIABLE_BRIGHTNESS
     time_e time_of_day = getTimeOfDay();

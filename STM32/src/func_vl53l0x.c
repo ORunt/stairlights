@@ -17,7 +17,7 @@ volatile bool tof_trigger_top = 0;
 volatile bool tof_trigger_bottom = 0;
 
 // THRESHOLD_LOW (mm), THRESHOLD_HIGH (mm), THRESHOLD_FILTER (mm)
-const vl53l0x_threshold_t tof_thresh_top =      {300, 1500, 600};
+const vl53l0x_threshold_t tof_thresh_top =      {400, 1500, 400};
 const vl53l0x_threshold_t tof_thresh_bottom =   {600, 1500, 200};
 
   /**

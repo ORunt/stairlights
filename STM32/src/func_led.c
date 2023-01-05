@@ -27,12 +27,13 @@ const led_channel_t led_channels[LED_CHANNELS] = {  {GPIOA, GPIO_Pin_0},
                                                     {GPIOA, GPIO_Pin_8},
                                                     {GPIOA, GPIO_Pin_9},
                                                     {GPIOB, GPIO_Pin_6},
-                                                    {GPIOB, GPIO_Pin_7}};
+                                                    {GPIOB, GPIO_Pin_7}
+                                                };
 
 volatile uint8_t led_brightness[LED_CHANNELS] = {0};
 uint8_t tim3_counter = 0;  // increments in 10us steps
 volatile uint32_t us_timer_counter = 0;
-uint32_t * fade_times = &fade_times_day[0];
+const uint32_t * fade_times = &fade_times_day[0];
 uint8_t max_brightness = MAX_BRIGHTNESS_DAY;
 
 static void CLK_Config()
@@ -48,6 +49,23 @@ static void CLK_Config()
     RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);  // Select the PLL as clock source.
     SystemCoreClockUpdate();
 }
+
+
+static void TIM_EnableInterrupt(FunctionalState state)
+{
+    NVIC_InitTypeDef NVIC_InitStructure;
+
+    /* Set the TIM3 global Interrupt State */
+    NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = state;
+    NVIC_Init(&NVIC_InitStructure);
+
+    /* TIM3 clear any pending interrupts */
+    TIM_ClearITPendingBit(TIM3, TIM_IT_CC1);
+}
+
+
 
 static void TIM_Config(void)
 {
@@ -70,7 +88,7 @@ static void TIM_Config(void)
     TIM_OCInitStructure.TIM_Pulse = ARR;                      // Output compare value (CCR1)
     TIM_OC1Init(TIM3, &TIM_OCInitStructure);
 
-    /* Enable the TIM3 gloabal Interrupt */
+    /* Enable the TIM3 global Interrupt */
     NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
     NVIC_InitStructure.NVIC_IRQChannelPriority = 0;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
@@ -270,7 +288,7 @@ static void startOnFadeDown(void)
 static void forceAllLightsOff(void)
 {
     int i;
-    memset(led_brightness, 0, LED_CHANNELS);
+    memset((void*)led_brightness, 0, LED_CHANNELS);
     for(i=0; i<LED_CHANNELS; i++)
     {
         GPIO_ResetBits(led_channels[i].port, led_channels[i].pin);
@@ -306,6 +324,7 @@ void hackPwm(void)
 void startFade(direction_e dir)
 {
     setTimeOfDay(fade_times, &max_brightness);
+    TIM_EnableInterrupt(ENABLE);
     switch(dir)
     {
         case DIR_UP:
@@ -323,4 +342,5 @@ void startFade(direction_e dir)
         default:
             break;
     }
+    TIM_EnableInterrupt(DISABLE);
 }

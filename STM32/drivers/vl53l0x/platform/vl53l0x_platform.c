@@ -8,11 +8,6 @@
 #define I2C_TIME_OUT_BYTE   1
 //#define VL53L0X_OsDelay(...) HAL_Delay(2)
 
-
-#ifndef HAL_I2C_MODULE_ENABLED
-#warning "HAL I2C module must be enable "
-#endif
-
 /* when not customized by application define dummy one */
 #ifndef VL53L0X_GetI2cBus
 /** This macro can be overloaded by user to enforce i2c sharing in RTOS context

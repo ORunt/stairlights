@@ -4,6 +4,6 @@
 #include "main.h"
 
 void watchdogSetup(void);
-int watchdogPet(void);
+void watchdogPet(void);
 
 #endif // __FUNC_WATCHDOG_H

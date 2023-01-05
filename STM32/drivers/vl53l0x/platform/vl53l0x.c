@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "stm32f0xx.h"
 #include "vl53l0x.h"
 
@@ -11,7 +12,7 @@
 #define VL53L0X_REG_WHO_AM_I                    0xC0
 #define VL53L0X_CHIP_ID                         0xEEAA
 
-#define FILTER_VL53L0X_SAMPLE_CNT               1   // (We need this many samples within the threshold to trigger an event)
+#define FILTER_VL53L0X_SAMPLE_CNT               2   // (We need this many samples within the threshold to trigger an event)
 
 #define ERR_CHK(x)          {uint16_t call_return = (x) ; if (call_return != 0) return call_return;}
 #define LOG_DBG(msg, ...)
@@ -186,11 +187,16 @@ int vl53l0x_start_continuous_interrupt_measure(vl53l0x_data *drv_data)
 
 int vl53l0x_stop_continuous_interrupt_measure(vl53l0x_data *drv_data)
 {
-    /* Stop continuous ranging */
-    VL53L0X_StopMeasurement(&drv_data->vl53l0x);
+    int status = 0;
 
-    /* Ensure device is ready for other commands */
-    WaitStopCompleted(&drv_data->vl53l0x);
+    /* Stop continuous ranging */
+    status = (int)VL53L0X_StopMeasurement(&drv_data->vl53l0x);
+
+    if(status == 0){
+        /* Ensure device is ready for other commands */
+        status = (int)WaitStopCompleted(&drv_data->vl53l0x);
+    }
+    return status;
 }
 
 int vl53l0x_init(vl53l0x_data *drv_data, uint8_t new_adrs, uint16_t xshut_pin, vl53l0x_range range, vl53l0x_mode mode, vl53l0x_threshold_t thresh)

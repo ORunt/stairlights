@@ -39,7 +39,7 @@ void watchdogSetup(void)
   IWDG_Enable();
 }
 
-int watchdogPet(void)
+void watchdogPet(void)
 {
     IWDG_ReloadCounter();
 }
@@ -47,6 +47,6 @@ int watchdogPet(void)
 #else
 
 void watchdogSetup(void){}
-int watchdogPet(void){}
+void watchdogPet(void){}
 
 #endif // ENABLE_WATCH_DAWG
