@@ -15,12 +15,14 @@ void buttonSetup(void)
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 
     /* Configure PB10 - PB11 as output ground */
+    /*
     GPIO_InitStructure.GPIO_Pin = GPIO_PUSH_BUTTONS_OUT;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;	  	// output
     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;    // output should not have pull up/down
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 
     GPIOB->BSRR = GPIO_PUSH_BUTTONS_OUT;                // Set High
+    */
 }
 
 int checkButtonPress(direction_e up_down)

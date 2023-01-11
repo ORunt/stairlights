@@ -36,7 +36,7 @@ typedef uint8_t bool;
 #define GAP_DURATION    3500    // The time between the lights being fully on and when the lights start turning off again (ms)
 #define MAX_BRIGHTNESS_DAY   100 // Value where the LED brightness should be capped (%)
 #define MAX_BRIGHTNESS_NIGHT 20 // Value where the LED brightness should be capped (%)
-#define LED_CHANNELS    12      // Number of stairs. Don't change
+#define LED_CHANNELS    13      // Number of stairs. Don't change
 #define FREQUENCY       400     // The frequency of the PWM signal (Hz) (Tested up to 400Hz)
 #define STAIR_FUNCTION  LINEAR
 #define FADE_FUNCTION   PARABOLA_SS
@@ -61,7 +61,7 @@ typedef uint8_t bool;
 #define GPIO_PUSH_BUTTONS_TOP_PIN       GPIO_Pin_3
 #define GPIO_PUSH_BUTTONS_BOTTOM_PIN    GPIO_Pin_4
 #define GPIO_PUSH_BUTTONS_IN            GPIO_PUSH_BUTTONS_TOP_PIN | GPIO_PUSH_BUTTONS_BOTTOM_PIN //GPIO_Pin_8 | GPIO_Pin_9
-#define GPIO_PUSH_BUTTONS_OUT           GPIO_Pin_5 //GPIO_Pin_10 | GPIO_Pin_11 // we should rather connect this to high or ground or whatever
+//#define GPIO_PUSH_BUTTONS_OUT           GPIO_Pin_5 //GPIO_Pin_10 | GPIO_Pin_11 // we should rather connect this to high or ground or whatever
 #define GPIO_USART_TX                   GPIO_PinSource14 //GPIO_PinSource2 //GPIO_PinSource14
 
 #endif // __MAIN_H

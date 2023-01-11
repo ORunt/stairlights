@@ -1,9 +1,11 @@
 LED strip lights
 	GPIOA, pins 0 - 9
 	GPIOB, pins 6 - 7
+	GPIOB, pin 5 (LED 13)
 
 Push Buttons
 	GPIOB, pins 3 - 4
+	// remove GPIOB_5 from here that us used as gnd/v+
 
 TOF sensors
 	GPIOB, pins 8 - 9

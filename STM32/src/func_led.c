@@ -27,7 +27,8 @@ const led_channel_t led_channels[LED_CHANNELS] = {  {GPIOA, GPIO_Pin_0},
                                                     {GPIOA, GPIO_Pin_8},
                                                     {GPIOA, GPIO_Pin_9},
                                                     {GPIOB, GPIO_Pin_6},
-                                                    {GPIOB, GPIO_Pin_7}
+                                                    {GPIOB, GPIO_Pin_7},
+                                                    {GPIOB, GPIO_Pin_5}
                                                 };
 
 volatile uint8_t led_brightness[LED_CHANNELS] = {0};
@@ -119,7 +120,7 @@ static void GPIO_Config(void)
     GPIO_Init(GPIOA, &GPIO_InitStructure);
 
     /* Configure PB6 - PB7 in output pushpull mode */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_5;
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 
     /* Enable SYSCFG clock */
