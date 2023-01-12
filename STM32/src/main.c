@@ -6,6 +6,8 @@
 #include "func_vl53l0x.h"
 #include "func_watchdog.h"
 
+extern bool dbg_error_state;
+
 bool checkTrigger(direction_e dir)
 {
     bool result = 0;
@@ -22,6 +24,7 @@ void pauseTrigger(bool pause)
 
 int main (void)
 {
+    uint8_t main_loop = 0;
     ledSetup();
     ldrSetup();
     buttonSetup();
@@ -42,6 +45,15 @@ int main (void)
             pauseTrigger(true);
             startFade(DIR_DOWN);
             pauseTrigger(false);
+        }
+        if(dbg_error_state){
+            main_loop ^= 1;
+            if(main_loop){
+                DBG_ERR_CHK(1,12);
+            }
+            else{
+                DBG_ERR_CHK_CLR(1,12);
+            }
         }
     }
 }

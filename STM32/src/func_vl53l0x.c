@@ -106,36 +106,45 @@ static void I2C_Config(void)
 
 void I2C1_IRQHandler(void)
 {
+    uint8_t it_cleared = 1;
     /* Check on I2C1 Time out flag and clear it */
     if (I2C_GetITStatus(I2C1, I2C_IT_TIMEOUT))
     {
+        it_cleared = 0;
         I2C_ClearITPendingBit(I2C1, I2C_IT_TIMEOUT);
     }
     /* Check on I2C1 Arbitration Lost flag and clear it */
     if (I2C_GetITStatus(I2C1, I2C_IT_ARLO))
     {
+        it_cleared = 0;
         I2C_ClearITPendingBit(I2C1, I2C_IT_ARLO);
     }
     /* Check on I2C1 PEC error flag and clear it */
     if (I2C_GetITStatus(I2C1, I2C_IT_PECERR))
     {
+        it_cleared = 0;
         I2C_ClearITPendingBit(I2C1, I2C_IT_PECERR);
     }
     /* Check on I2C1 Overrun/Underrun error flag and clear it */
     if (I2C_GetITStatus(I2C1, I2C_IT_OVR))
     {
+        it_cleared = 0;
         I2C_ClearITPendingBit(I2C1, I2C_IT_OVR);
     }
     /* Check on I2C1 Acknowledge failure error flag and clear it */
     if (I2C_GetITStatus(I2C1, I2C_IT_NACKF))
     {
+        it_cleared = 0;
         I2C_ClearITPendingBit(I2C1, I2C_IT_NACKF);
     }
     /* Check on I2C1 Bus error flag and clear it */
     if (I2C_GetITStatus(I2C1, I2C_IT_BERR))
     {
+        it_cleared = 0;
         I2C_ClearITPendingBit(I2C1, I2C_IT_BERR);
     }
+    DBG_ERR_CHK(it_cleared, 5);
+    DBG_ERR_CHK(!it_cleared, 6);
 }
 
 #ifdef TRIGGER_VL53L0X_INT
@@ -283,10 +292,10 @@ void vl53l0xSetup(void)
 {
     I2C_Config();
 #ifdef ENABLE_VL53L0X_BOTTOM
-    vl53l0x_init(&vl53l0x_bottom, 0x30, GPIO_XSHUT_BOTTOM_PIN, LONG_RANGE, MODE_SINGLE_SHOT, tof_thresh_bottom);
+    DBG_ERR_CHK(vl53l0x_init(&vl53l0x_bottom, 0x30, GPIO_XSHUT_BOTTOM_PIN, LONG_RANGE, MODE_SINGLE_SHOT, tof_thresh_bottom), 1);
 #endif
 #ifdef ENABLE_VL53L0X_TOP
-    vl53l0x_init(&vl53l0x_top, 0x31, GPIO_XSHUT_TOP_PIN, LONG_RANGE, MODE_SINGLE_SHOT, tof_thresh_top);
+    DBG_ERR_CHK(vl53l0x_init(&vl53l0x_top, 0x31, GPIO_XSHUT_TOP_PIN, LONG_RANGE, MODE_SINGLE_SHOT, tof_thresh_top),2);
 #endif
 }
 
@@ -296,12 +305,12 @@ int checkToF(direction_e up_down)
     uint16_t value = 0;
 #ifdef ENABLE_VL53L0X_BOTTOM
     if(up_down == DIR_UP){
-        vl53l0x_get_measurement(&vl53l0x_bottom, SENSOR_CHAN_PROX, &value);
+        DBG_ERR_CHK(vl53l0x_get_measurement(&vl53l0x_bottom, SENSOR_CHAN_PROX, &value),3);
     }
 #endif
 #ifdef ENABLE_VL53L0X_TOP
     if(up_down == DIR_DOWN){
-        vl53l0x_get_measurement(&vl53l0x_top, SENSOR_CHAN_PROX, &value);
+        DBG_ERR_CHK(vl53l0x_get_measurement(&vl53l0x_top, SENSOR_CHAN_PROX, &value),4);
     }
 #endif
     return value;
