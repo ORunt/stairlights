@@ -79,3 +79,9 @@ void printfSetup(void)
 void printfSetup(void){}
 
 #endif
+
+#ifdef ENABLE_DEBUG_LED
+
+bool dbg_error_state = false;
+
+#endif

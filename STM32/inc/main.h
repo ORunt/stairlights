@@ -48,6 +48,7 @@ typedef uint8_t bool;
 
 // ============================== Maintainance settings ==============================
 //#define ENABLE_DEBUG_PRINT      // printf via USART
+//#define ENABLE_DEBUG_LED        // Display error codes via LED strips
 #define ENABLE_WATCH_DAWG       // Enable the watch dog
 
 // ================================ GPIO PIN defines ================================
