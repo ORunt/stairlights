@@ -1,4 +1,5 @@
 #include "func_vl53l0x.h"
+#include "func_debug.h"
 #include "vl53l0x.h"
 #include "i2c_comms.h"
 
@@ -88,9 +89,9 @@ static void I2C_Config(void)
     I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
     //I2C_InitStructure.I2C_Timing = 0x0010020A;    // 344khz
     //I2C_InitStructure.I2C_Timing = 0xF000F3FF;    // 1khz
-    //I2C_InitStructure.I2C_Timing =   0x00201D2B;    // 100khz
-    //I2C_InitStructure.I2C_Timing = 0x0000020B;
-    I2C_InitStructure.I2C_Timing = 0x0010021E;    // 200khz
+    I2C_InitStructure.I2C_Timing = 0x00201D7B;      // 50kHz - most stable so far
+    //I2C_InitStructure.I2C_Timing = 0x00201D2B;    // 100khz
+    //I2C_InitStructure.I2C_Timing = 0x0010021E;    // 200khz
 
     /* Apply I2C1 configuration after enabling it */
     I2C_Init(I2C1, &I2C_InitStructure);

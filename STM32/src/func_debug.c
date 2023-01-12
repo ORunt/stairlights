@@ -1,6 +1,6 @@
 #include "func_debug.h"
 
-#ifdef ENABLE_DEBUG
+#ifdef ENABLE_DEBUG_PRINT
 
 //#ifdef __GNUC__
     /* With GCC/RAISONANCE, small printf (option LD Linker->Libraries->Small printf

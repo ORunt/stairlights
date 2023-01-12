@@ -62,10 +62,15 @@ static void TIM_EnableInterrupt(FunctionalState state)
     NVIC_InitStructure.NVIC_IRQChannelCmd = state;
     NVIC_Init(&NVIC_InitStructure);
 
+    /* TIM Interrupts enable */
+    TIM_ITConfig(TIM3, TIM_IT_CC1, state);
+
+    /* TIM3 enable counter */
+    TIM_Cmd(TIM3, state);
+
     /* TIM3 clear any pending interrupts */
     TIM_ClearITPendingBit(TIM3, TIM_IT_CC1);
 }
-
 
 
 static void TIM_Config(void)
@@ -89,18 +94,9 @@ static void TIM_Config(void)
     TIM_OCInitStructure.TIM_Pulse = ARR;                      // Output compare value (CCR1)
     TIM_OC1Init(TIM3, &TIM_OCInitStructure);
 
-    /* Enable the TIM3 global Interrupt */
-    NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
-
-    /* TIM Interrupts enable */
-    TIM_ITConfig(TIM3, TIM_IT_CC1, ENABLE);
-
-    /* TIM3 enable counter */
-    TIM_Cmd(TIM3, ENABLE);
+    // Don't start up the timer or interrupt yet.
 }
+
 
 static void GPIO_Config(void)
 {
@@ -126,6 +122,7 @@ static void GPIO_Config(void)
     /* Enable SYSCFG clock */
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
 }
+
 
 void ledSetup(void)
 {

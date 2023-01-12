@@ -58,7 +58,7 @@ int vl53l0x_get_measurement(vl53l0x_data *drv_data, sensor_channel chan, uint16_
     
     if (drv_data->RangingMeasurementData.RangeMilliMeter == 0)
     {
-        return 1;   // Unknown error
+        return 0;   // Unknown error
     }
     
 	if (chan == SENSOR_CHAN_PROX){
