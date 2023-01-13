@@ -5,7 +5,8 @@
 
 uint16_t ldr_measurement = 0;
 
-#define ADC_DAY_TIME_THRESHOLD  50 //400 // Max is 4096
+#define ADC_DAY_TIME_THRESHOLD  1 // Max is 4096
+#define ADC_NUM_AVE             3
 
 void ldrSetup(void)
 {
@@ -50,23 +51,32 @@ void ldrSetup(void)
     while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_ADRDY));
 
     /* ADC1 regular Software Start Conv */
-    ADC_StartOfConversion(ADC1);
+    //ADC_StartOfConversion(ADC1);
 }
 
 
 static uint16_t getAdcConversion(void)
 {
-    ADC_StartOfConversion(ADC1);
+    int cnt;
+    
+    for(cnt=0; cnt<ADC_NUM_AVE; cnt++)
+    {
+        /* Get ADC1 converted data */
+        ADC_StartOfConversion(ADC1);
+        while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET);
+        ldr_measurement += ADC_GetConversionValue(ADC1);
+    }
+    
+    ADC_StopOfConversion(ADC1);
+    
+    ldr_measurement /= ADC_NUM_AVE;
 
-    while(ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC) == RESET);
-
-    /* Get ADC1 converted data */
-    return ldr_measurement = ADC_GetConversionValue(ADC1);
+    return ldr_measurement;
 }
 
 static time_e getTimeOfDay(void)
 {
-    return (getAdcConversion() > ADC_DAY_TIME_THRESHOLD) ? TIME_DAY : TIME_NIGHT;
+    return (getAdcConversion() >= ADC_DAY_TIME_THRESHOLD) ? TIME_DAY : TIME_NIGHT;
 }
 
 #else
