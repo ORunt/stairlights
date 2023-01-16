@@ -89,7 +89,10 @@ static void I2C_Config(void)
     I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit;
     //I2C_InitStructure.I2C_Timing = 0x0010020A;    // 344khz
     //I2C_InitStructure.I2C_Timing = 0xF000F3FF;    // 1khz
-    I2C_InitStructure.I2C_Timing = 0x00201D7B;      // 50kHz - most stable so far
+    I2C_InitStructure.I2C_Timing = 0x00208FF9;   // 20kHz
+    //I2C_InitStructure.I2C_Timing = 0x00201DE6;      // 30kHz
+    //I2C_InitStructure.I2C_Timing = 0x00201DA3;      // 40kHz
+    //I2C_InitStructure.I2C_Timing = 0x00201D7B;      // 50kHz - stable with the debugger plugged in
     //I2C_InitStructure.I2C_Timing = 0x00201D2B;    // 100khz
     //I2C_InitStructure.I2C_Timing = 0x0010021E;    // 200khz
 
@@ -251,7 +254,7 @@ void vl53l0xSetup(void)
     startTof(true);
 }
 
-int checkToF(direction_e up_down)
+int checkToF(direction_e up_down, uint16_t * err_state)
 {
     uint16_t value = 0;
 #ifdef ENABLE_VL53L0X_BOTTOM
@@ -291,17 +294,17 @@ void vl53l0xSetup(void)
 }
 
 
-int checkToF(direction_e up_down)
+int checkToF(direction_e up_down, uint16_t * err_state)
 {
     uint16_t value = 0;
 #ifdef ENABLE_VL53L0X_BOTTOM
     if(up_down == DIR_UP){
-        vl53l0x_get_measurement(&vl53l0x_bottom, SENSOR_CHAN_PROX, &value);
+        *err_state |= vl53l0x_get_measurement(&vl53l0x_bottom, SENSOR_CHAN_PROX, &value);
     }
 #endif
 #ifdef ENABLE_VL53L0X_TOP
     if(up_down == DIR_DOWN){
-        vl53l0x_get_measurement(&vl53l0x_top, SENSOR_CHAN_PROX, &value);
+        *err_state |= vl53l0x_get_measurement(&vl53l0x_top, SENSOR_CHAN_PROX, &value);
     }
 #endif
     return value;
@@ -314,6 +317,6 @@ int checkToF(direction_e up_down)
 
 void startTof(bool start){}
 void vl53l0xSetup(void){}
-int checkToF(direction_e up_down){return 0;}
+int checkToF(direction_e up_down, uint16_t * err_state){return 0;}
 
 #endif

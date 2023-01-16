@@ -6,11 +6,12 @@
 #include "func_vl53l0x.h"
 #include "func_watchdog.h"
 
-bool checkTrigger(direction_e dir)
+
+bool checkTrigger(direction_e dir, uint16_t * err_state)
 {
     bool result = 0;
     result |= (bool)checkButtonPress(dir);
-    result |= (bool)checkToF(dir);
+    result |= (bool)checkToF(dir, err_state);
     watchdogPet();
     return result;
 }
@@ -22,6 +23,7 @@ void pauseTrigger(bool pause)
 
 int main (void)
 {
+    uint16_t err = 0;
     ledSetup();
     ldrSetup();
     buttonSetup();
@@ -31,17 +33,23 @@ int main (void)
 
     while(1)
     {
-        if(checkTrigger(DIR_UP))
+        if(checkTrigger(DIR_UP, &err))
         {
             pauseTrigger(true);
             startFade(DIR_UP);
             pauseTrigger(false);
         }
-        if(checkTrigger(DIR_DOWN))
+        if(checkTrigger(DIR_DOWN, &err))
         {
             pauseTrigger(true);
             startFade(DIR_DOWN);
             pauseTrigger(false);
+        }
+
+        // Klap that watch dog
+        if(err)
+        {
+            while(1){}
         }
     }
 }

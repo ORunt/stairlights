@@ -12,15 +12,16 @@
 
 #ifdef ENABLE_DEBUG_LED
     extern const led_channel_t led_channels[LED_CHANNELS];
-    extern bool dbg_error_state;
 
-    #define DBG_ERR_CHK(func,led)       if((func) && ((led)<LED_CHANNELS)){GPIO_SetBits(led_channels[led].port, led_channels[led].pin);dbg_error_state=true;}
-    #define DBG_ERR_CHK_CLR(func,led)   if((func) && ((led)<LED_CHANNELS)){GPIO_ResetBits(led_channels[led].port, led_channels[led].pin);}
+    #define DBG_ERR_CHK(func,led)       if((func) && ((led)<LED_CHANNELS)){GPIO_SetBits(led_channels[led].port, led_channels[led].pin);DBG_SetErrState(true);}
+    #define DBG_ERR_SET(set,led)        DBG_SetErrState(true);if((set) && ((led)<LED_CHANNELS)){GPIO_SetBits(led_channels[led].port, led_channels[led].pin);}else{GPIO_ResetBits(led_channels[led].port, led_channels[led].pin);}
 #else
-    #define DBG_ERR_CHK(func,led)
-    #define DBG_ERR_CHK_CLR(func,led)
+    #define DBG_ERR_CHK(func,led)       func;
+    #define DBG_ERR_SET(set,led)
 #endif // ENABLE_DEBUG_LED
 
 void printfSetup(void);
+bool DBG_GetErrState(void);
+void DBG_SetErrState(bool state);
 
 #endif // __FUNC_DEBUG_H

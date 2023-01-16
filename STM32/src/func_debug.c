@@ -83,5 +83,20 @@ void printfSetup(void){}
 #ifdef ENABLE_DEBUG_LED
 
 bool dbg_error_state = false;
+    
+bool DBG_GetErrState(void)
+{
+    return dbg_error_state;
+}
+
+void DBG_SetErrState(bool state)
+{
+    dbg_error_state = state;
+}
+
+#else
+
+bool DBG_GetErrState(void){return false;}
+void DBG_SetErrState(bool state){}
 
 #endif
