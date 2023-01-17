@@ -1,4 +1,6 @@
-#include "stairlight_functions.h"
+#include "func_led.h"
+#include "func_ldr.h"
+#include "func_watchdog.h"
 #include "graph_lookup_table.h"
 
 // PSC = ceil((64Mhz x 10us / 160) - 1)
@@ -8,7 +10,6 @@
 #define PULSE_PERIOD        (10000/FREQUENCY)      // The pulse period of the main timer in (us)
 #define AC_DIM_PRESCALER	1
 #define ARR                 (PULSE_PERIOD * 16)
-
 
 typedef struct{
     uint8_t offset;
@@ -26,11 +27,15 @@ const led_channel_t led_channels[LED_CHANNELS] = {  {GPIOA, GPIO_Pin_0},
                                                     {GPIOA, GPIO_Pin_8},
                                                     {GPIOA, GPIO_Pin_9},
                                                     {GPIOB, GPIO_Pin_6},
-                                                    {GPIOB, GPIO_Pin_7}};
+                                                    {GPIOB, GPIO_Pin_7},
+                                                    {GPIOB, GPIO_Pin_5}
+                                                };
 
 volatile uint8_t led_brightness[LED_CHANNELS] = {0};
 uint8_t tim3_counter = 0;  // increments in 10us steps
 volatile uint32_t us_timer_counter = 0;
+const uint32_t * fade_times = &fade_times_day[0];
+uint8_t max_brightness = MAX_BRIGHTNESS_DAY;
 
 static void CLK_Config()
 {
@@ -45,6 +50,28 @@ static void CLK_Config()
     RCC_SYSCLKConfig(RCC_SYSCLKSource_PLLCLK);  // Select the PLL as clock source.
     SystemCoreClockUpdate();
 }
+
+
+static void TIM_EnableInterrupt(FunctionalState state)
+{
+    NVIC_InitTypeDef NVIC_InitStructure;
+
+    /* Set the TIM3 global Interrupt State */
+    NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPriority = 0;
+    NVIC_InitStructure.NVIC_IRQChannelCmd = state;
+    NVIC_Init(&NVIC_InitStructure);
+
+    /* TIM Interrupts enable */
+    TIM_ITConfig(TIM3, TIM_IT_CC1, state);
+
+    /* TIM3 enable counter */
+    TIM_Cmd(TIM3, state);
+
+    /* TIM3 clear any pending interrupts */
+    TIM_ClearITPendingBit(TIM3, TIM_IT_CC1);
+}
+
 
 static void TIM_Config(void)
 {
@@ -67,39 +94,9 @@ static void TIM_Config(void)
     TIM_OCInitStructure.TIM_Pulse = ARR;                      // Output compare value (CCR1)
     TIM_OC1Init(TIM3, &TIM_OCInitStructure);
 
-    /* Enable the TIM3 gloabal Interrupt */
-    NVIC_InitStructure.NVIC_IRQChannel = TIM3_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
-
-    /* TIM Interrupts enable */
-    TIM_ITConfig(TIM3, TIM_IT_CC1, ENABLE);
-
-    /* TIM3 enable counter */
-    TIM_Cmd(TIM3, ENABLE);
+    // Don't start up the timer or interrupt yet.
 }
 
-static void GPIO_ButtonSetup(void)
-{
-    GPIO_InitTypeDef   GPIO_InitStructure;
-    
-    /* Configure PB8 - PB9 in input mode */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;	  	// input
-    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;		// pushpull mode
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	// max
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_DOWN;	    // Pulldown resistors
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
-    
-    /* Configure PB10 - PB11 as output ground */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;	  	// output
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;    // output should not have pull up/down
-    GPIO_Init(GPIOB, &GPIO_InitStructure);
-    
-    GPIOB->BSRR = GPIO_Pin_10 | GPIO_Pin_11;            // Set High
-}
 
 static void GPIO_Config(void)
 {
@@ -117,21 +114,21 @@ static void GPIO_Config(void)
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;	// max
     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;	// output should not have pull up/down
     GPIO_Init(GPIOA, &GPIO_InitStructure);
-    
+
     /* Configure PB6 - PB7 in output pushpull mode */
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
+    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7 | GPIO_Pin_5;
     GPIO_Init(GPIOB, &GPIO_InitStructure);
 
     /* Enable SYSCFG clock */
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
 }
 
-void stairlightSetup(void)
+
+void ledSetup(void)
 {
     CLK_Config();
-    GPIO_Config();
-    GPIO_ButtonSetup(); // TODO: Replace with I2C sensors in the future
     TIM_Config();
+    GPIO_Config();
 }
 
 //#define CHECK_FREQ
@@ -142,7 +139,7 @@ void TIM3_IRQHandler(void)
     if (TIM_GetITStatus(TIM3, TIM_IT_CC1) != RESET)
     {
         int i;
-        
+
         TIM_ClearITPendingBit(TIM3, TIM_IT_CC1);
         #ifndef CHECK_FREQ
         for(i = 0; i < LED_CHANNELS; i++)
@@ -171,13 +168,14 @@ void TIM3_IRQHandler(void)
             GPIO_SetBits(GPIOA, GPIO_Pin_0);
         cam ^= 1;
         #endif
-        
+
         tim3_counter = (tim3_counter + 1) % 100;
         us_timer_counter++;
     }
 }
 
-void setLedBrightness(uint8_t channel, uint8_t brightness)
+
+static void setLedBrightness(uint8_t channel, uint8_t brightness)
 {
     if(channel >= LED_CHANNELS)
     {
@@ -196,12 +194,12 @@ static void startOnFadeUp(void)
     int i;
     uint32_t temp_counter = 0;
     us_timer_counter = 0;
-    
+
     while (temp_counter <= WHILE_WAIT)
     {
         for(i = 0; i < LED_CHANNELS; i++)
         {
-            if(led_brightness[i] < MAX_BRIGHTNESS)
+            if(led_brightness[i] < max_brightness)
             {
                 // TODO Do i need to add some delta +- times here encase the interrupts are too faaast?
                 if(temp_counter >= (fade_times[led_brightness[i]] + stair_times[i]))
@@ -211,6 +209,7 @@ static void startOnFadeUp(void)
             }
         }
         temp_counter = us_timer_counter;
+        watchdogPet();
     }
 }
 
@@ -219,7 +218,7 @@ static void startOffFadeDown(void)
     us_timer_counter = 0;
     uint32_t temp_counter = 0;
     int i;
-    
+
     while (temp_counter <= WHILE_WAIT)
     {
         for(i = LED_CHANNELS-1; i >= 0; i--)
@@ -227,13 +226,14 @@ static void startOffFadeDown(void)
             if(led_brightness[i] > 0)
             {
                 // TODO Do i need to add some delta +- times here encase the interrupts are too faaast?
-                if(temp_counter == (fade_times[MAX_BRIGHTNESS - led_brightness[i]] + stair_times[LED_CHANNELS-1-i]))
+                if(temp_counter >= (fade_times[max_brightness - led_brightness[i]] + stair_times[LED_CHANNELS-1-i]))
                 {
                     led_brightness[i]--;
                 }
             }
         }
         temp_counter = us_timer_counter;
+        watchdogPet();
     }
 }
 
@@ -242,20 +242,21 @@ static void startOffFadeUp(void)
     int i;
     uint32_t temp_counter = 0;
     us_timer_counter = 0;
-    
+
     while (temp_counter <= WHILE_WAIT)
     {
         for(i = 0; i < LED_CHANNELS; i++)
         {
             if(led_brightness[i] > 0)
             {
-                if(temp_counter >= (fade_times[MAX_BRIGHTNESS - led_brightness[i]] + stair_times[i]))
+                if(temp_counter >= (fade_times[max_brightness - led_brightness[i]] + stair_times[i]))
                 {
                     led_brightness[i]--;
                 }
             }
         }
         temp_counter = us_timer_counter;
+        watchdogPet();
     }
 }
 
@@ -264,81 +265,80 @@ static void startOnFadeDown(void)
     us_timer_counter = 0;
     uint32_t temp_counter = 0;
     int i;
-    
+
     while (temp_counter <= WHILE_WAIT)
     {
         for(i = LED_CHANNELS-1; i >= 0; i--)
         {
-            if(led_brightness[i] < MAX_BRIGHTNESS)
+            if(led_brightness[i] < max_brightness)
             {
-                if(temp_counter == (fade_times[led_brightness[i]] + stair_times[LED_CHANNELS-1-i]))
+                if(temp_counter >= (fade_times[led_brightness[i]] + stair_times[LED_CHANNELS-1-i]))
                 {
                     led_brightness[i]++;
                 }
             }
         }
         temp_counter = us_timer_counter;
+        watchdogPet();
+    }
+}
+
+static void forceAllLightsOff(void)
+{
+    int i;
+    memset((void*)led_brightness, 0, LED_CHANNELS);
+    for(i=0; i<LED_CHANNELS; i++)
+    {
+        GPIO_ResetBits(led_channels[i].port, led_channels[i].pin);
     }
 }
 
 void waitForGap(void)
 {
     us_timer_counter = 0;
-    while(us_timer_counter < CONVERT_2_COUNT(GAP_DURATION)){}
+    while(us_timer_counter < CONVERT_2_COUNT(GAP_DURATION)){watchdogPet();}
 }
 
 void waitForGapv2(uint16_t ms)
 {
     us_timer_counter = 0;
-    while(us_timer_counter < CONVERT_2_COUNT(ms)){}
+    while(us_timer_counter < CONVERT_2_COUNT(ms)){watchdogPet();}
 }
 
-
-void startFade(direction_e dir)
-{
-    switch(dir)
-    {
-        case DIR_UP:
-            startOnFadeUp();
-            waitForGap();
-            startOffFadeUp();
-        break;
-        case DIR_DOWN:
-            startOnFadeDown();
-            waitForGap();
-            startOffFadeDown();
-        break;
-        default:
-            break;
-    }
-}
 
 void hackPwm(void)
 {
-    /*setLedBrightness(0,10);
-    waitForGap();
-    setLedBrightness(0,20);
-    waitForGap();
-    setLedBrightness(0,30);
-    waitForGap();
-    setLedBrightness(0,40);
-    waitForGap();
-    setLedBrightness(0,50);
-    waitForGap();
-    setLedBrightness(0,60);
-    waitForGap();
-    setLedBrightness(0,70);
-    waitForGap();
-    setLedBrightness(0,80);
-    waitForGap();
-    setLedBrightness(0,90);
-    waitForGap();
-    setLedBrightness(0,100);
-    waitForGap();*/
     int i;
     for(i=0; i<=100; i++)
     {
         setLedBrightness(0,i);
         waitForGapv2(50);
     }
+}
+
+
+
+
+void startFade(direction_e dir)
+{
+    setTimeOfDay(fade_times, &max_brightness);
+    TIM_EnableInterrupt(ENABLE);
+    switch(dir)
+    {
+        case DIR_UP:
+            startOnFadeUp();
+            waitForGap();
+            startOffFadeUp();
+            forceAllLightsOff();
+        break;
+        case DIR_DOWN:
+            startOnFadeDown();
+            waitForGap();
+            startOffFadeDown();
+            forceAllLightsOff();
+        break;
+        default:
+            break;
+    }
+    TIM_EnableInterrupt(DISABLE);
 }
