@@ -5,7 +5,7 @@
 
 uint16_t ldr_measurement = 0;
 
-#define ADC_DAY_TIME_THRESHOLD  5 // Max is 4096
+#define ADC_DAY_TIME_THRESHOLD  1 // Max is 4096
 #define ADC_NUM_AVE             3
 
 void ldrSetup(void)
@@ -58,6 +58,7 @@ void ldrSetup(void)
 static uint16_t getAdcConversion(void)
 {
     int cnt;
+    ldr_measurement = 0;
     
     for(cnt=0; cnt<ADC_NUM_AVE; cnt++)
     {
